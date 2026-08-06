@@ -47,37 +47,29 @@ GKE Fleet Microservices                  Backend GCE VM Infrastructure
 
 ## 🚀 Getting Started: GitOps & IaC Provisioning
 
-### Option 1: ArgoCD GitOps Deployment (KCC Declarative Sync)
+### Option 1: Automated Terraform IaC Deployment (Recommended)
 
-Because all GCE Compute Engine resources under [`gce/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce) are declared using Google Cloud Config Connector (KCC) Kubernetes CRDs (`kind: ComputeInstance`, `kind: ComputeRegionInstanceGroupManager`, `kind: ComputeFirewall`), **ArgoCD natively manages and continuously reconciles GCE infrastructure directly from Git**:
+To provision or reset all GCE VM instances and cluster resources via Terraform:
 
 ```bash
-# Apply ArgoCD Application to continuously reconcile GCE infrastructure
-kubectl apply -f gce/argocd-app.yaml
+# Provision / Reset all GCE VM instances via automated Terraform IaC
+./scripts/deploy_gce_vms_terraform.sh
+
+# Reset GKE fleet workloads to canonical broken evaluation state
+./scripts/enforce_broken_state.sh
 ```
 
 ---
 
-### Option 2: Terraform IaC Provisioning
+### Option 2: ArgoCD GitOps Continuous Sync
 
-For teams using Terraform CLI or Terraform Controller:
+For GitOps-driven environments utilizing ArgoCD:
 
-1. **GKE Cluster Provisioning**:
+1. **ArgoCD Cluster Setup**: Ensure ArgoCD is installed in your management cluster (`kubectl get ns argocd`).
+2. **Repository URL Configuration**: If operating from a fork, update line 11 of [`gce/argocd-app.yaml`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/argocd-app.yaml) to point `repoURL` to your fork (`https://github.com/<your-username>/org-mono-repo.git`).
+3. **Apply ArgoCD Application**:
    ```bash
-   cd clusters/prod-core-api-01/terraform
-   terraform init
-   terraform apply -var="project_id=${GCP_PROJECT_ID}"
-   ```
-
-2. **GCE Instance Provisioning**:
-   Use the reusable GCE module at [`terraform/modules/gce-instance`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/terraform/modules/gce-instance):
-   ```hcl
-   module "legacy_auth_vm" {
-     source        = "../../terraform/modules/gce-instance"
-     project_id    = var.project_id
-     instance_name = "prod-legacy-auth-vm"
-     machine_type  = "e2-standard-2"
-   }
+   kubectl apply -f gce/argocd-app.yaml -n argocd
    ```
 
 ---
@@ -116,6 +108,7 @@ org-mono-repo/
 │       └── gce-instance/                      # Reusable GCE VM Compute Engine Terraform module
 ├── gce/                                       # Compute Engine (GCE) VM & Hybrid Compute Infrastructure
 │   ├── argocd-app.yaml                        # ArgoCD GitOps Application for GCE continuous sync
+│   ├── terraform/                             # Root Terraform Workspace for GCE Instances (main.tf)
 │   ├── prod-auth-legacy-vm/                   # Legacy Auth GCE VM infrastructure & startup script
 │   ├── prod-audit-logger-vm/                  # Audit logger GCE VM infrastructure & disk spooling
 │   ├── prod-payment-mig-gateway/              # Managed Instance Group template & autohealing health check
@@ -140,7 +133,7 @@ org-mono-repo/
 │   ├── adr/                                   # Architecture Decision Records (ADR-001, ADR-002, ADR-003)
 │   └── architecture-board-guidelines.md       # Architecture Review Board (ARB) 10 Deployment Mandates
 ├── scripts/
-│   ├── deploy_gce_vms_gcloud.sh              # Deploys & resets GCE VM infrastructure via gcloud CLI
+│   ├── deploy_gce_vms_terraform.sh           # Automated Terraform IaC provisioner for GCE instances
 │   └── enforce_broken_state.sh              # Resets both GKE fleet workloads & GCE VM states
 └── default-deny-netpol.yaml
 ```
@@ -185,9 +178,9 @@ org-mono-repo/
 
 ## 🚀 Operations
 
-### Provision / Reset GCE VM Infrastructure
+### Provision / Reset GCE VM Infrastructure via Terraform
 ```bash
-./scripts/deploy_gce_vms_gcloud.sh
+./scripts/deploy_gce_vms_terraform.sh
 ```
 
 ### Reset Entire Fleet & GCE Evaluation State
