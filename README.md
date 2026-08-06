@@ -7,26 +7,60 @@ Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing
 
 ---
 
-## 🌐 GCP Project Portability & Setup for Forks
+## 🚀 Getting Started: Fork & Sync Guide
 
-If you fork this repository to deploy or evaluate SRE agents in your own GCP environment:
+### Option 1: Standard Fork & Provisioning
 
-1. **Environment Variables**:
-   Set `GCP_PROJECT_ID` (or `GCP_PROJECT_2025` and `GCP_PROJECT_TEST`) to your target GCP Project ID:
+1. **Fork & Clone**:
+   Fork `https://github.com/fkc1e100/org-mono-repo` on GitHub and clone locally:
    ```bash
+   git clone https://github.com/<your-github-username>/org-mono-repo.git
+   cd org-mono-repo
+   ```
+
+2. **Set GCP Authentication & Target Project**:
+   ```bash
+   gcloud auth login
+   gcloud auth application-default login
    export GCP_PROJECT_ID="your-gcp-project-id"
    ```
 
-2. **Terraform Provisioning**:
-   Pass your project ID to Terraform when initializing per-cluster IaC:
+3. **Provision Fleet Cluster Infrastructure (Terraform)**:
    ```bash
    cd clusters/prod-core-api-01/terraform
    terraform init
    terraform apply -var="project_id=${GCP_PROJECT_ID}"
    ```
 
-3. **Fleet Operations**:
-   The scripts (`deploy_fleet_event_watchers.sh` and `enforce_broken_state.sh`) dynamically read `GCP_PROJECT_ID` or fallback to your active `gcloud` project context (`gcloud config get-value project`).
+4. **Deploy Event Watchers & Apply Fleet Workloads**:
+   ```bash
+   ./scripts/deploy_fleet_event_watchers.sh
+   ./scripts/enforce_broken_state.sh
+   ```
+
+---
+
+### Option 2: Upstream Sync Pattern (Keeping Forks Updated)
+
+To keep your forked repository continuously synchronized with upstream improvements:
+
+1. **Configure Upstream Remote**:
+   ```bash
+   git remote add upstream https://github.com/fkc1e100/org-mono-repo.git
+   ```
+
+2. **Sync Upstream Updates**:
+   ```bash
+   git fetch upstream
+   git checkout main
+   git rebase upstream/main
+   git push origin main --force
+   ```
+
+3. **Canonical Workspace Sync**:
+   ```bash
+   rsync -av --delete ./ /path/to/canonical-workspace/ --exclude .git
+   ```
 
 ---
 
