@@ -1,6 +1,6 @@
 # Organization Fleet Infrastructure & Workload Monorepo (`org-mono-repo`)
 
-Welcome to **`fkc1e100/org-mono-repo`**, the centralized monorepo containing multi-cluster GKE fleet infrastructure configurations, Terraform IaC modules, failure-triage workloads, RBAC policies, and event monitoring scripts.
+Welcome to **`fkc1e100/org-mono-repo`**, the centralized monorepo containing multi-cluster GKE fleet infrastructure configurations, Config Connector (KCC) GCP infrastructure declarations, Terraform IaC modules, failure-triage workloads, RBAC policies, and event monitoring scripts.
 
 ---
 
@@ -8,7 +8,13 @@ Welcome to **`fkc1e100/org-mono-repo`**, the centralized monorepo containing mul
 
 ```text
 org-mono-repo/
-├── clusters/
+├── gcp-infrastructure/        # Config Connector (KCC) GCP Resources as Code
+│   ├── database/              # CloudSQL SQLInstance & SQLDatabase KCC CRDs
+│   ├── iam/                   # Workload Identity IAMServiceAccount & IAMPolicyBinding KCC CRDs
+│   ├── kms/                   # Customer-Managed Encryption Keys (KMSKeyRing, KMSCryptoKey)
+│   ├── networking/            # ComputeNetwork VPC & ComputeSubnetwork KCC CRDs
+│   └── storage/               # StorageBucket & Access Control KCC CRDs
+├── clusters/                  # Per-Cluster Deployments & Terraform IaC
 │   ├── gca-gke-2025/          # GCP Project gca-gke-2025 cluster definitions
 │   │   ├── cluster-01/
 │   │   │   ├── cluster-agent-event-watcher.yaml
@@ -36,6 +42,20 @@ org-mono-repo/
 
 ---
 
+## ☁️ Declarative GCP Infrastructure as Code (`gcp-infrastructure/`)
+
+All GCP Cloud Resources supporting GKE fleet workloads are managed declaratively using **Google Cloud Config Connector (KCC)**:
+
+| Path | KCC Kind | GCP Cloud Component | Description |
+|---|---|---|---|
+| [`gcp-infrastructure/iam/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gcp-infrastructure/iam/workload-identity-bindings.yaml) | `IAMServiceAccount`, `IAMPolicyBinding` | Workload Identity | Binds GKE Kubernetes Service Accounts to GCP IAM Service Accounts |
+| [`gcp-infrastructure/storage/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gcp-infrastructure/storage/gcs-buckets.yaml) | `StorageBucket`, `StorageBucketAccessControl` | Cloud Storage | Manages CMEK-encrypted GCS buckets for application datasets |
+| [`gcp-infrastructure/database/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gcp-infrastructure/database/cloudsql-instance.yaml) | `SQLInstance`, `SQLDatabase` | Cloud SQL (PostgreSQL) | Provisions regional HA PostgreSQL instances connected to GKE Private VPC |
+| [`gcp-infrastructure/kms/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gcp-infrastructure/kms/kms-keyring.yaml) | `KMSKeyRing`, `KMSCryptoKey` | Cloud KMS | Manages 90-day rotating Customer-Managed Encryption Keys (CMEK) |
+| [`gcp-infrastructure/networking/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gcp-infrastructure/networking/vpc-network.yaml) | `ComputeNetwork`, `ComputeSubnetwork` | VPC Networking | Defines custom VPC networks, GKE pod/service secondary IP CIDR ranges |
+
+---
+
 ## 🏗️ Per-Cluster Terraform Provisioning
 
 Each cluster under `clusters/<project_id>/<cluster_name>/terraform/` contains its dedicated Infrastructure-as-Code declaration:
@@ -46,13 +66,6 @@ clusters/<project_id>/<cluster_name>/terraform/
 ├── variables.tf      # Configurable project, region, zone, machine type & node count
 ├── outputs.tf        # Cluster endpoint & gcloud get-credentials command
 └── terraform.tfvars  # Cluster-specific variable assignments
-```
-
-To provision or re-create a cluster:
-```bash
-cd clusters/gca-gke-2025/complex-01/terraform
-terraform init
-terraform apply
 ```
 
 ---
