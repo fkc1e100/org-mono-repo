@@ -14,17 +14,17 @@ org-mono-repo/
 │   ├── kms/                                   # Customer-Managed Encryption Keys (KMSKeyRing, KMSCryptoKey)
 │   ├── networking/                            # ComputeNetwork VPC & ComputeSubnetwork KCC CRDs
 │   └── storage/                               # StorageBucket & Access Control KCC CRDs
-├── clusters/                                  # Descriptive Fleet Cluster Directories & Terraform IaC
+├── clusters/                                  # Specific Fleet Cluster Directories & Terraform IaC
 │   ├── cluster-01-ip-exhaustion-crashloop/
 │   ├── cluster-02-private-registry-auth-fail/
-│   ├── cluster-03-workload-fail/
-│   ├── cluster-04-workload-fail/
-│   ├── cluster-05-workload-fail/
-│   ├── cluster-06-workload-fail/
-│   ├── cluster-07-workload-fail/
+│   ├── cluster-03-oomkilled-memory-limit/
+│   ├── cluster-04-missing-secret-key-crash/
+│   ├── cluster-05-pvc-unbound-storageclass/
+│   ├── cluster-06-ingress-tls-cert-missing/
+│   ├── cluster-07-liveness-probe-failure/
 │   ├── cluster-08-spot-obtainability-lockout/
 │   ├── cluster-09-flex-dws-obtainability-timeout/
-│   ├── cluster-10-workload-fail/
+│   ├── cluster-10-hpa-cpu-metric-missing/
 │   ├── complex-01-webhook-deadlock-wi-auth/
 │   ├── complex-02-dns-netpol-gcs-block/
 │   ├── complex-03-gar-auth-sa-token-lockout/
@@ -49,10 +49,16 @@ org-mono-repo/
 | Cluster Folder Name | GCP Project | Domain Failures | Scenario Summary |
 |---|---|---|---|
 | [`cluster-01-ip-exhaustion-crashloop`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-01-ip-exhaustion-crashloop) | `gca-gke-2025` | Workload | Pod CrashLoopBackOff & Subnet IP Exhaustion |
-| [`cluster-02-private-registry-auth-fail`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-02-private-registry-auth-fail) | `gca-gke-2025` | Workload | Private Image Pull Auth Failure |
+| [`cluster-02-private-registry-auth-fail`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-02-private-registry-auth-fail) | `gca-gke-2025` | Workload | Private Container Image Pull Authentication Failure |
+| [`cluster-03-oomkilled-memory-limit`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-03-oomkilled-memory-limit) | `gca-gke-2025` | Workload | Container Memory Limit Exceeded (OOMKilled Exit Code 137) |
+| [`cluster-04-missing-secret-key-crash`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-04-missing-secret-key-crash) | `gca-gke-2025` | Workload | Container Environment Missing Secret Key (`CreateContainerConfigError`) |
+| [`cluster-05-pvc-unbound-storageclass`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-05-pvc-unbound-storageclass) | `gca-gke-2025` | Storage | PersistentVolumeClaim Pending due to Non-Existent StorageClass |
+| [`cluster-06-ingress-tls-cert-missing`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-06-ingress-tls-cert-missing) | `gca-gke-test` | Ingress | Ingress Routing Failure due to Missing TLS Certificate Secret |
+| [`cluster-07-liveness-probe-failure`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-07-liveness-probe-failure) | `gca-gke-test` | Workload | Liveness Probe Port Misconfiguration & Continuous Container Restarts |
 | [`cluster-08-spot-obtainability-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-08-spot-obtainability-lockout) | `gca-gke-2025` | Workload | Spot Instance Obtainability Lockout |
 | [`cluster-09-flex-dws-obtainability-timeout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-09-flex-dws-obtainability-timeout) | `gca-gke-2025` | Workload | Flex DWS Start Obtainability Timeout |
-| [`complex-01-webhook-deadlock-wi-auth`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-01-webhook-deadlock-wi-auth) | `gca-gke-2025` | Multi-Domain | **Webhook Deadlock & WI Auth**: `MutatingWebhookConfiguration` fails on unreachable backend pod stuck in Workload Identity Secret Manager auth failure. Blocks all cluster pod API requests. |
+| [`cluster-10-hpa-cpu-metric-missing`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-10-hpa-cpu-metric-missing) | `gca-gke-test` | Autoscaling | HorizontalPodAutoscaler Target Deployment Missing CPU Resource Requests |
+| [`complex-01-webhook-deadlock-wi-auth`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-01-webhook-deadlock-wi-auth) | `gca-gke-2025` | Multi-Domain | **Webhook Deadlock & WI Auth**: `MutatingWebhookConfiguration` fails on unreachable backend pod stuck in Workload Identity Secret Manager auth failure. |
 | [`complex-02-dns-netpol-gcs-block`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-02-dns-netpol-gcs-block) | `gca-gke-2025` | Multi-Domain | **NetworkPolicy DNS & GCS Block**: Egress policy drops DNS port 53 & GCP Metadata (`169.254.169.254`), causing host resolution failure & Cloud Storage API timeouts. |
 | [`complex-03-gar-auth-sa-token-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-03-gar-auth-sa-token-lockout) | `gca-gke-test` | Multi-Domain | **Artifact Registry Auth & RBAC Lockout**: Private container image pull failure from Google Artifact Registry (`us-docker.pkg.dev`), missing automount SA token, and zero RBAC permissions. |
 | [`complex-04-pod-affinity-cni-ip-starvation`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-04-pod-affinity-cni-ip-starvation) | `gca-gke-test` | Multi-Domain | **Scheduling Deadlock & CNI IP Starvation**: Strict `podAntiAffinity` on 2-node cluster with 4 vCPU requests + 35 pods exhausting node CNI Pod IP allocation + GCP Internal Load Balancer IP failure. |
