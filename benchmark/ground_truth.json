@@ -1,0 +1,193 @@
+{
+  "version": "1.0",
+  "description": "Ground Truth Answer Key for Kube-Agents Autonomous SRE Triage Benchmark",
+  "scenarios": {
+    "prod-core-api-01": {
+      "scenario_id": "scenario-01",
+      "cluster_name": "cluster-01",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "Workload",
+      "target_namespace": "default",
+      "target_deployment": "payment-processor",
+      "symptoms": ["Pod CrashLoopBackOff", "Subnet Pod IP Allocation Failure"],
+      "root_cause": "Application panics on missing environment variable DB_CONNECTION_STRING while secondary daemon pod exhausts subnet IP CIDR allocation."
+    },
+    "prod-user-auth-02": {
+      "scenario_id": "scenario-02",
+      "cluster_name": "cluster-02",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "Workload",
+      "target_namespace": "default",
+      "target_deployment": "user-auth-service",
+      "symptoms": ["ImagePullBackOff", "ErrImagePull"],
+      "root_cause": "Container image targets private registry image without imagePullSecrets or Workload Identity permissions."
+    },
+    "prod-data-pipeline-03": {
+      "scenario_id": "scenario-03",
+      "cluster_name": "cluster-03",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "Workload",
+      "target_namespace": "default",
+      "target_deployment": "memory-cache-service",
+      "symptoms": ["OOMKilled", "Container Restarts"],
+      "root_cause": "Memory limit set to 128Mi while process attempts to allocate 512Mi in heap, triggering kernel OOM killer (Exit Code 137)."
+    },
+    "prod-checkout-04": {
+      "scenario_id": "scenario-04",
+      "cluster_name": "cluster-04",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "Workload",
+      "target_namespace": "default",
+      "target_deployment": "checkout-backend-api",
+      "symptoms": ["CreateContainerConfigError"],
+      "root_cause": "Pod environment references secretKeyRef 'missing-db-credentials' key 'DATABASE_PASSWORD' which does not exist in cluster."
+    },
+    "prod-storage-db-05": {
+      "scenario_id": "scenario-05",
+      "cluster_name": "cluster-05",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "Storage",
+      "target_namespace": "default",
+      "target_deployment": "stateful-postgres-db",
+      "symptoms": ["Pod Pending", "PVC Unbound"],
+      "root_cause": "PersistentVolumeClaim requests non-existent StorageClass 'fast-nvme-ssd-nonexistent'."
+    },
+    "edge-ingress-gateway-06": {
+      "scenario_id": "scenario-06",
+      "cluster_name": "cluster-06",
+      "project_id": "gca-gke-test",
+      "zone": "us-central1-a",
+      "primary_domain": "Ingress",
+      "target_namespace": "default",
+      "target_deployment": "frontend-web-gateway",
+      "symptoms": ["Ingress TLS Secret Missing", "HTTP 502 Bad Gateway"],
+      "root_cause": "Ingress resource references non-existent TLS secret 'prod-tls-cert-missing-secret'."
+    },
+    "prod-api-router-07": {
+      "scenario_id": "scenario-07",
+      "cluster_name": "cluster-07",
+      "project_id": "gca-gke-test",
+      "zone": "us-central1-a",
+      "primary_domain": "Workload",
+      "target_namespace": "default",
+      "target_deployment": "api-routing-proxy",
+      "symptoms": ["Unhealthy Liveness Probe", "Continuous Pod Restarts"],
+      "root_cause": "Liveness probe configured to HTTP GET port 8080 /healthz while container listens on port 80."
+    },
+    "batch-analytics-08": {
+      "scenario_id": "scenario-08",
+      "cluster_name": "cluster-08",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "Compute",
+      "target_namespace": "default",
+      "target_deployment": "batch-report-worker",
+      "symptoms": ["Pod Pending", "FailedScheduling"],
+      "root_cause": "Workload requires Spot instance nodeSelector while Spot capacity obtainability is locked out."
+    },
+    "ai-training-dws-09": {
+      "scenario_id": "scenario-09",
+      "cluster_name": "cluster-09",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "Compute",
+      "target_namespace": "default",
+      "target_deployment": "gemma-fine-tuning-job",
+      "symptoms": ["Flex DWS Timeout", "Job Pending"],
+      "root_cause": "Dynamic Workload Scheduler (Flex DWS) job times out waiting for consecutive multi-node GPU allocation."
+    },
+    "prod-auto-scaler-10": {
+      "scenario_id": "scenario-10",
+      "cluster_name": "cluster-10",
+      "project_id": "gca-gke-test",
+      "zone": "us-central1-a",
+      "primary_domain": "Autoscaling",
+      "target_namespace": "default",
+      "target_deployment": "queue-worker-service",
+      "symptoms": ["HPA Warning", "Scaling Active False"],
+      "root_cause": "HorizontalPodAutoscaler targets Deployment with CPU utilization metric, but container specification omits resources.requests.cpu."
+    },
+    "prod-checkout-gateway-11": {
+      "scenario_id": "complex-01",
+      "cluster_name": "complex-01",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "Multi-Domain (Admission Control & Auth)",
+      "target_namespace": "default",
+      "target_deployment": "payment-api",
+      "symptoms": ["MutatingWebhook Failure", "Pod API Lockout"],
+      "root_cause": "MutatingWebhookConfiguration 'fleet-policy-enforcer' fails open/closed on unreachable backend pod stuck in Workload Identity GCP Secret Manager authentication failure."
+    },
+    "prod-order-processing-12": {
+      "scenario_id": "complex-02",
+      "cluster_name": "complex-02",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "Multi-Domain (Networking & Cloud Storage)",
+      "target_namespace": "prod-checkout",
+      "target_deployment": "checkout-backend",
+      "symptoms": ["DNS Resolution Failure", "GCS Timeout"],
+      "root_cause": "NetworkPolicy 'isolate-dns-and-gcp-egress' drops UDP/TCP port 53 (kube-dns) and GCP Metadata IP (169.254.169.254)."
+    },
+    "prod-catalog-sync-13": {
+      "scenario_id": "complex-03",
+      "cluster_name": "complex-03",
+      "project_id": "gca-gke-test",
+      "zone": "us-central1-a",
+      "primary_domain": "Multi-Domain (Image Auth & RBAC)",
+      "target_namespace": "prod-apps",
+      "target_deployment": "config-syncer",
+      "symptoms": ["GAR ImagePullBackOff", "Missing SA Token"],
+      "root_cause": "Private container image pull failure from Google Artifact Registry (us-docker.pkg.dev), automountServiceAccountToken disabled, and zero RBAC permissions."
+    },
+    "prod-ha-payments-14": {
+      "scenario_id": "complex-04",
+      "cluster_name": "complex-04",
+      "project_id": "gca-gke-test",
+      "zone": "us-central1-a",
+      "primary_domain": "Multi-Domain (Scheduling, CNI & LoadBalancer)",
+      "target_namespace": "default",
+      "target_deployment": "ha-payment-gateway",
+      "symptoms": ["PodAntiAffinity Deadlock", "CNI IP Starvation", "ILB IP Exhaustion"],
+      "root_cause": "Strict podAntiAffinity on 2-node cluster requesting 4 vCPUs per pod + 35 pods exhausting node CNI Pod IP allocation + GCP Internal Load Balancer IP failure."
+    },
+    "prod-analytics-store-15": {
+      "scenario_id": "complex-05",
+      "cluster_name": "complex-05",
+      "project_id": "gca-gke-test",
+      "zone": "us-central1-a",
+      "primary_domain": "Multi-Domain (Storage, Security & Cloud Sync)",
+      "target_namespace": "default",
+      "target_deployment": "analytics-worker",
+      "symptoms": ["PD RWO Multi-Attach Error", "Sysctl Permission Denied"],
+      "root_cause": "GCE PersistentDisk ReadWriteOnce multi-attach deadlock across nodes + unprivileged sysctl initContainer PodSecurity violation + GCS bucket sync failure."
+    },
+    "ai-inference-gpu-16": {
+      "scenario_id": "complex-06",
+      "cluster_name": "complex-06",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "Compute / Capacity",
+      "target_namespace": "default",
+      "target_deployment": "llm-batch-inference",
+      "symptoms": ["ScaleUpFailed", "ZONE_RESOURCE_POOL_EXHAUSTED"],
+      "root_cause": "Workload requests ComputeClass 'gpu-accelerated-class' with Spot A100 GPUs. GKE Cluster Autoscaler scale-up fails with ZONE_RESOURCE_POOL_EXHAUSTED in us-central1-a."
+    },
+    "hpc-batch-compute-17": {
+      "scenario_id": "complex-07",
+      "cluster_name": "complex-07",
+      "project_id": "gca-gke-test",
+      "zone": "us-central1-a",
+      "primary_domain": "Compute / Capacity",
+      "target_namespace": "default",
+      "target_deployment": "hpc-batch-analytics",
+      "symptoms": ["ScaleUpFailed", "Insufficient vCPU Quota"],
+      "root_cause": "Workload requests ComputeClass 'hpc-compute-class' requiring 56 vCPUs on c2-standard-60 Spot. GKE Cluster Autoscaler scale-up fails with ZONE_RESOURCE_POOL_EXHAUSTED in us-central1-a."
+    }
+  }
+}

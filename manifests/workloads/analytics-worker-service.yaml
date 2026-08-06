@@ -14,11 +14,10 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wl-complex-05-analytics-worker
+  name: analytics-worker
   namespace: default
   labels:
     test.kube-agents.io/workload: complex-05
-    test.kube-agents.io/failure-type: StorageMultiAttachAndGCPBucketFailure
 spec:
   replicas: 2
   selector:

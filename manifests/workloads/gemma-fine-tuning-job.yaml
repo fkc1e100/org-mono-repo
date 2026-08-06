@@ -7,7 +7,6 @@ metadata:
     dws.gke.io/wait-timeout: "5s"
   labels:
     test.kube-agents.io/workload: wl-09
-    test.kube-agents.io/failure-type: FlexStartObtainabilityTimeout
 spec:
   template:
     metadata:

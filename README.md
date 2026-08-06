@@ -1,6 +1,6 @@
 # Organization Fleet Infrastructure & Workload Monorepo (`org-mono-repo`)
 
-Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing multi-cluster GKE fleet infrastructure modules, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, and GitHub Actions CI/CD workflows with automated review bots.
+Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing multi-cluster GKE fleet infrastructure modules, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, GitHub Actions CI/CD workflows, and an autonomous SRE evaluation benchmark framework.
 
 ---
 
@@ -8,6 +8,8 @@ Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing
 
 ```text
 org-mono-repo/
+├── benchmark/                                 # Autonomous SRE Benchmark Evaluation Key
+│   └── ground_truth.json                      # Hidden scenario ground truth & evaluation answer key
 ├── .github/                                    # Enterprise CI/CD & Automated Review Bots
 │   ├── dependabot.yml                         # Dependabot automated dependency review bot
 │   ├── workflows/
@@ -39,64 +41,76 @@ org-mono-repo/
 │   ├── team-analytics/                        # Namespace, ResourceQuota & GPU allocation
 │   └── team-checkout/                         # Namespace, ResourceQuota & PodSecurity Restricted
 ├── clusters/                                  # Fleet Cluster Directories & IaC Configurations
-│   ├── cluster-01-ip-exhaustion-crashloop/
-│   ├── cluster-02-private-registry-auth-fail/
-│   ├── cluster-03-oomkilled-memory-limit/
-│   ├── cluster-04-missing-secret-key-crash/
-│   ├── cluster-05-pvc-unbound-storageclass/
-│   ├── cluster-06-ingress-tls-cert-missing/
-│   ├── cluster-07-liveness-probe-failure/
-│   ├── cluster-08-spot-obtainability-lockout/
-│   ├── cluster-09-flex-dws-obtainability-timeout/
-│   ├── cluster-10-hpa-cpu-metric-missing/
-│   ├── complex-01-webhook-deadlock-wi-auth/
-│   ├── complex-02-dns-netpol-gcs-block/
-│   ├── complex-03-gar-auth-sa-token-lockout/
-│   ├── complex-04-pod-affinity-cni-ip-starvation/
-│   ├── complex-05-pd-rwo-multiattach-sysctl/
-│   ├── complex-06-spot-gpu-stockout-fallback/
-│   └── complex-07-cpu-stockout-compute-class/
+│   ├── prod-core-api-01/
+│   ├── prod-user-auth-02/
+│   ├── prod-data-pipeline-03/
+│   ├── prod-checkout-04/
+│   ├── prod-storage-db-05/
+│   ├── edge-ingress-gateway-06/
+│   ├── prod-api-router-07/
+│   ├── batch-analytics-08/
+│   ├── ai-training-dws-09/
+│   ├── prod-auto-scaler-10/
+│   ├── prod-checkout-gateway-11/
+│   ├── prod-order-processing-12/
+│   ├── prod-catalog-sync-13/
+│   ├── prod-ha-payments-14/
+│   ├── prod-analytics-store-15/
+│   ├── ai-inference-gpu-16/
+│   └── hpc-batch-compute-17/
 ├── manifests/                                 # Kubernetes Manifests & Workload Definitions
 │   ├── common/                                # Base fleet event watchers & loadbalancer services
 │   ├── labels/                                # Fleet namespace labeling standards
-│   └── workloads/                             # Canonical and complex failure workload manifests
+│   └── workloads/                             # Business domain workload manifests (sanitized)
+│       ├── payment-processor.yaml
+│       ├── user-auth-service.yaml
+│       ├── memory-cache-service.yaml
+│       ├── checkout-backend-api.yaml
+│       ├── stateful-postgres-db.yaml
+│       ├── frontend-web-gateway.yaml
+│       ├── api-routing-proxy.yaml
+│       ├── batch-report-worker.yaml
+│       ├── gemma-fine-tuning-job.yaml
+│       ├── queue-worker-service.yaml
+│       ├── payment-api-gateway.yaml
+│       ├── checkout-backend-service.yaml
+│       ├── config-syncer-service.yaml
+│       ├── ha-payment-gateway-service.yaml
+│       ├── analytics-worker-service.yaml
+│       ├── llm-batch-inference-job.yaml
+│       └── hpc-batch-analytics-job.yaml
 ├── rbac/                                      # Fleet ClusterRoles & ClusterRoleBindings
-│   ├── role.yaml
-│   └── rolebinding.yaml
 ├── docs/                                      # Enterprise Documentation & ADRs
 │   └── adr/
-│       ├── ADR-001-monorepo-layout.md
-│       ├── ADR-002-config-connector-adoption.md
-│       └── ADR-003-custom-compute-classes-for-gpu-stockout.md
 ├── scripts/
 │   ├── deploy_fleet_event_watchers.sh        # Deploys kube-agents watcher daemon across fleet
-│   └── enforce_broken_state.sh              # Resets fleet workloads to failure states
-└── default-deny-netpol.yaml                   # Cluster-wide default deny egress/ingress NetPol
+│   └── enforce_broken_state.sh              # Resets fleet workloads to evaluation states
+└── default-deny-netpol.yaml
 ```
 
 ---
 
-## ⚡ Fleet Scenarios Summary (17 Clusters)
+## ⚡ Fleet Cluster Portfolio (17 Clusters)
 
-| Cluster Directory Name | GCP Project | Primary Failure Domain | Failure Workload Manifest | Scenario Summary |
+| Cluster Folder Name | GCP Project | Target Workload Manifest | Target Namespace | Scenario ID |
 |---|---|---|---|---|
-| [`cluster-01-ip-exhaustion-crashloop`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-01-ip-exhaustion-crashloop) | `gca-gke-2025` | Workload | `wl-01-crashloop.yaml` | Pod CrashLoopBackOff & Subnet IP Exhaustion |
-| [`cluster-02-private-registry-auth-fail`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-02-private-registry-auth-fail) | `gca-gke-2025` | Workload | `wl-02-private-image-auth-fail.yaml` | Private Image Pull Auth Failure |
-| [`cluster-03-oomkilled-memory-limit`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-03-oomkilled-memory-limit) | `gca-gke-2025` | Workload | `wl-03-oomkilled.yaml` | Container Memory Limit Exceeded (`OOMKilled` Exit Code 137) |
-| [`cluster-04-missing-secret-key-crash`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-04-missing-secret-key-crash) | `gca-gke-2025` | Workload | `wl-04-missing-secret-key.yaml` | Missing Secret Key in Env (`CreateContainerConfigError`) |
-| [`cluster-05-pvc-unbound-storageclass`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-05-pvc-unbound-storageclass) | `gca-gke-2025` | Storage | `wl-05-pvc-unbound.yaml` | PersistentVolumeClaim Unbound (Non-Existent StorageClass) |
-| [`cluster-06-ingress-tls-cert-missing`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-06-ingress-tls-cert-missing) | `gca-gke-test` | Ingress | `wl-06-ingress-tls-missing.yaml` | Ingress Routing Failure due to Missing TLS Certificate Secret |
-| [`cluster-07-liveness-probe-failure`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-07-liveness-probe-failure) | `gca-gke-test` | Workload | `wl-07-liveness-probe-fail.yaml` | Liveness Probe Port Misconfig & Continuous Container Restarts |
-| [`cluster-08-spot-obtainability-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-08-spot-obtainability-lockout) | `gca-gke-2025` | Workload | `wl-08-spot-obtainability-failure.yaml` | Spot Instance Obtainability Lockout |
-| [`cluster-09-flex-dws-obtainability-timeout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-09-flex-dws-obtainability-timeout) | `gca-gke-2025` | Workload | `wl-09-flex-obtainability-timeout.yaml` | Flex DWS Start Obtainability Timeout |
-| [`cluster-10-hpa-cpu-metric-missing`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-10-hpa-cpu-metric-missing) | `gca-gke-test` | Autoscaling | `wl-10-hpa-metric-missing.yaml` | HorizontalPodAutoscaler Target Missing CPU Resource Requests |
-| [`complex-01-webhook-deadlock-wi-auth`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-01-webhook-deadlock-wi-auth) | `gca-gke-2025` | Multi-Domain | `complex-01-webhook-deadlock.yaml` | Webhook Deadlock & Secret Manager Workload Identity Auth Failure |
-| [`complex-02-dns-netpol-gcs-block`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-02-dns-netpol-gcs-block) | `gca-gke-2025` | Multi-Domain | `complex-02-dns-netpol-failure.yaml` | NetPol Egress Isolation dropping DNS port 53 & GCP Metadata |
-| [`complex-03-gar-auth-sa-token-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-03-gar-auth-sa-token-lockout) | `gca-gke-test` | Multi-Domain | `complex-03-rbac-token-lockout.yaml` | Artifact Registry Pull Fail, disabled SA token automount, zero RBAC |
-| [`complex-04-pod-affinity-cni-ip-starvation`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-04-pod-affinity-cni-ip-starvation) | `gca-gke-test` | Multi-Domain | `complex-04-cni-affinity-exhaustion.yaml` | Strict `podAntiAffinity` + CNI IP allocation exhaustion + ILB Failure |
-| [`complex-05-pd-rwo-multiattach-sysctl`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-05-pd-rwo-multiattach-sysctl) | `gca-gke-test` | Multi-Domain | `complex-05-storage-init-deadlock.yaml` | PersistentDisk RWO multi-attach deadlock + unprivileged `sysctl` |
-| [`complex-06-spot-gpu-stockout-fallback`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-06-spot-gpu-stockout-fallback) | `gca-gke-2025` | Compute | `complex-06-gpu-stockout-autoscaling.yaml` | Spot A100 GPU stockout via `a100-gpu-class` ComputeClass |
-| [`complex-07-cpu-stockout-compute-class`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-07-cpu-stockout-compute-class) | `gca-gke-test` | Compute | `complex-07-cpu-stockout-compute-class.yaml` | High-core 56-vCPU Spot stockout via `cpu-hpc-compute-class` ComputeClass |
+| [`prod-core-api-01`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-core-api-01) | `gca-gke-2025` | `payment-processor.yaml` | `default` | `scenario-01` |
+| [`prod-user-auth-02`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-user-auth-02) | `gca-gke-2025` | `user-auth-service.yaml` | `default` | `scenario-02` |
+| [`prod-data-pipeline-03`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-data-pipeline-03) | `gca-gke-2025` | `memory-cache-service.yaml` | `default` | `scenario-03` |
+| [`prod-checkout-04`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-checkout-04) | `gca-gke-2025` | `checkout-backend-api.yaml` | `default` | `scenario-04` |
+| [`prod-storage-db-05`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-storage-db-05) | `gca-gke-2025` | `stateful-postgres-db.yaml` | `default` | `scenario-05` |
+| [`edge-ingress-gateway-06`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/edge-ingress-gateway-06) | `gca-gke-test` | `frontend-web-gateway.yaml` | `default` | `scenario-06` |
+| [`prod-api-router-07`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-api-router-07) | `gca-gke-test` | `api-routing-proxy.yaml` | `default` | `scenario-07` |
+| [`batch-analytics-08`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/batch-analytics-08) | `gca-gke-2025` | `batch-report-worker.yaml` | `default` | `scenario-08` |
+| [`ai-training-dws-09`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/ai-training-dws-09) | `gca-gke-2025` | `gemma-fine-tuning-job.yaml` | `default` | `scenario-09` |
+| [`prod-auto-scaler-10`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-auto-scaler-10) | `gca-gke-test` | `queue-worker-service.yaml` | `default` | `scenario-10` |
+| [`prod-checkout-gateway-11`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-checkout-gateway-11) | `gca-gke-2025` | `payment-api-gateway.yaml` | `default` | `complex-01` |
+| [`prod-order-processing-12`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-order-processing-12) | `gca-gke-2025` | `checkout-backend-service.yaml` | `prod-checkout` | `complex-02` |
+| [`prod-catalog-sync-13`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-catalog-sync-13) | `gca-gke-test` | `config-syncer-service.yaml` | `prod-apps` | `complex-03` |
+| [`prod-ha-payments-14`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-ha-payments-14) | `gca-gke-test` | `ha-payment-gateway-service.yaml` | `default` | `complex-04` |
+| [`prod-analytics-store-15`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-analytics-store-15) | `gca-gke-test` | `analytics-worker-service.yaml` | `default` | `complex-05` |
+| [`ai-inference-gpu-16`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/ai-inference-gpu-16) | `gca-gke-2025` | `llm-batch-inference-job.yaml` | `default` | `complex-06` |
+| [`hpc-batch-compute-17`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/hpc-batch-compute-17) | `gca-gke-test` | `hpc-batch-analytics-job.yaml` | `default` | `complex-07` |
 
 ---
 

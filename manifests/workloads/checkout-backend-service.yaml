@@ -45,7 +45,6 @@ metadata:
   namespace: prod-checkout
   labels:
     test.kube-agents.io/workload: complex-02
-    test.kube-agents.io/failure-type: DNSAndGCPEgressBlock
 spec:
   podSelector:
     matchLabels:
@@ -66,11 +65,10 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wl-complex-02-checkout-backend
+  name: checkout-backend
   namespace: prod-checkout
   labels:
     test.kube-agents.io/workload: complex-02
-    test.kube-agents.io/failure-type: DNSIsolationAndGCPServicesFailure
 spec:
   replicas: 2
   selector:

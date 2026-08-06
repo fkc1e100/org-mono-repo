@@ -5,7 +5,6 @@ metadata:
   namespace: default
   labels:
     test.kube-agents.io/workload: wl-08
-    test.kube-agents.io/failure-type: SpotObtainabilityLockout
 spec:
   replicas: 5
   selector:

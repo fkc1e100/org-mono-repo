@@ -36,11 +36,10 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: wl-06-ingress-tls-fail
+  name: frontend-web-gateway-fail
   namespace: default
   labels:
     test.kube-agents.io/workload: cluster-06
-    test.kube-agents.io/failure-type: IngressTLSCertMissing
 spec:
   tls:
   - hosts:

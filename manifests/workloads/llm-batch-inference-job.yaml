@@ -21,7 +21,6 @@ metadata:
   namespace: default
   labels:
     test.kube-agents.io/workload: complex-06
-    test.kube-agents.io/failure-type: ComputeClassGPUStockoutAutoscaling
 spec:
   replicas: 8
   selector:

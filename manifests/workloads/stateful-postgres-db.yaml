@@ -18,7 +18,6 @@ metadata:
   namespace: default
   labels:
     test.kube-agents.io/workload: cluster-05
-    test.kube-agents.io/failure-type: PVCUnboundStorageClass
 spec:
   replicas: 1
   selector:

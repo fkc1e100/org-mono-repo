@@ -16,11 +16,10 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wl-complex-03-config-syncer
+  name: config-syncer
   namespace: prod-apps
   labels:
     test.kube-agents.io/workload: complex-03
-    test.kube-agents.io/failure-type: ArtifactRegistryAuthAndRBACLockout
 spec:
   replicas: 2
   selector:

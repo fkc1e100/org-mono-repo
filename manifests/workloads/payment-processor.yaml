@@ -5,7 +5,6 @@ metadata:
   namespace: default
   labels:
     test.kube-agents.io/workload: wl-01
-    test.kube-agents.io/failure-type: CrashLoopBackOff
 spec:
   replicas: 2
   selector:

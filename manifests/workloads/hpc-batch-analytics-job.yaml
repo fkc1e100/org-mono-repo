@@ -16,11 +16,10 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wl-complex-07-hpc-batch-analytics
+  name: hpc-batch-analytics
   namespace: default
   labels:
     test.kube-agents.io/workload: complex-07
-    test.kube-agents.io/failure-type: CPUStockoutAutoscalingFailure
 spec:
   replicas: 16
   selector:
