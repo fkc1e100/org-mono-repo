@@ -32,9 +32,10 @@ Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing
    terraform apply -var="project_id=${GCP_PROJECT_ID}"
    ```
 
-4. **Deploy Event Watchers & Apply Fleet Workloads**:
+4. **Deploy Fleet GKE & GCE Infrastructure**:
    ```bash
    ./scripts/deploy_fleet_event_watchers.sh
+   ./scripts/deploy_gce_vms_gcloud.sh
    ./scripts/enforce_broken_state.sh
    ```
 
@@ -100,59 +101,16 @@ org-mono-repo/
 │   ├── team-analytics/                        # Namespace, ResourceQuota & GPU allocation
 │   └── team-checkout/                         # Namespace, ResourceQuota & PodSecurity Restricted
 ├── clusters/                                  # Fleet Cluster Directories & IaC Configurations
-│   ├── prod-core-api-01/
-│   ├── prod-user-auth-02/
-│   ├── prod-data-pipeline-03/
-│   ├── prod-checkout-04/
-│   ├── prod-storage-db-05/
-│   ├── edge-ingress-gateway-06/
-│   ├── prod-api-router-07/
-│   ├── batch-analytics-08/
-│   ├── ai-training-dws-09/
-│   ├── prod-auto-scaler-10/
-│   ├── prod-checkout-gateway-11/
-│   ├── prod-order-processing-12/
-│   ├── prod-catalog-sync-13/
-│   ├── prod-ha-payments-14/
-│   ├── prod-analytics-store-15/
-│   ├── ai-inference-gpu-16/
-│   └── hpc-batch-compute-17/
 ├── manifests/                                 # Kubernetes Manifests & Workload Definitions
-│   ├── common/                                # Base fleet event watchers & loadbalancer services
-│   ├── labels/                                # Fleet namespace labeling standards
-│   └── workloads/                             # Production business domain workload manifests
 ├── rbac/                                      # Fleet ClusterRoles & ClusterRoleBindings
 ├── docs/                                      # Enterprise Documentation & ADRs
 │   └── adr/
 ├── scripts/
-│   ├── deploy_fleet_event_watchers.sh        # Deploys kube-agents watcher daemon across fleet
-│   └── enforce_broken_state.sh              # Resets fleet workloads to evaluation states
+│   ├── deploy_fleet_event_watchers.sh        # Deploys kube-agents watcher daemon across GKE fleet
+│   ├── deploy_gce_vms_gcloud.sh              # Deploys & resets GCE VM infrastructure via gcloud CLI
+│   └── enforce_broken_state.sh              # Resets both GKE fleet workloads & GCE VM states
 └── default-deny-netpol.yaml
 ```
-
----
-
-## ⚡ Fleet Cluster Portfolio (17 Clusters)
-
-| Cluster Folder Name | GCP Project | Target Workload Manifest | Enterprise Target Namespace |
-|---|---|---|---|
-| [`prod-core-api-01`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-core-api-01) | `${GCP_PROJECT_ID}` | `payment-processor.yaml` | `prod-payments` |
-| [`prod-user-auth-02`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-user-auth-02) | `${GCP_PROJECT_ID}` | `user-auth-service.yaml` | `prod-auth` |
-| [`prod-data-pipeline-03`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-data-pipeline-03) | `${GCP_PROJECT_ID}` | `memory-cache-service.yaml` | `prod-caching` |
-| [`prod-checkout-04`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-checkout-04) | `${GCP_PROJECT_ID}` | `checkout-backend-api.yaml` | `prod-checkout` |
-| [`prod-storage-db-05`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-storage-db-05) | `${GCP_PROJECT_ID}` | `stateful-postgres-db.yaml` | `prod-databases` |
-| [`edge-ingress-gateway-06`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/edge-ingress-gateway-06) | `${GCP_PROJECT_ID}` | `frontend-web-gateway.yaml` | `prod-ingress` |
-| [`prod-api-router-07`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-api-router-07) | `${GCP_PROJECT_ID}` | `api-routing-proxy.yaml` | `prod-gateway` |
-| [`batch-analytics-08`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/batch-analytics-08) | `${GCP_PROJECT_ID}` | `batch-report-worker.yaml` | `batch-processing` |
-| [`ai-training-dws-09`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/ai-training-dws-09) | `${GCP_PROJECT_ID}` | `gemma-fine-tuning-job.yaml` | `ai-training` |
-| [`prod-auto-scaler-10`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-auto-scaler-10) | `${GCP_PROJECT_ID}` | `queue-worker-service.yaml` | `prod-workers` |
-| [`prod-checkout-gateway-11`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-checkout-gateway-11) | `${GCP_PROJECT_ID}` | `payment-api-gateway.yaml` | `prod-payments` |
-| [`prod-order-processing-12`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-order-processing-12) | `${GCP_PROJECT_ID}` | `checkout-backend-service.yaml` | `prod-checkout` |
-| [`prod-catalog-sync-13`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-catalog-sync-13) | `${GCP_PROJECT_ID}` | `config-syncer-service.yaml` | `prod-catalog` |
-| [`prod-ha-payments-14`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-ha-payments-14) | `${GCP_PROJECT_ID}` | `ha-payment-gateway-service.yaml` | `prod-payments` |
-| [`prod-analytics-store-15`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-analytics-store-15) | `${GCP_PROJECT_ID}` | `analytics-worker-service.yaml` | `prod-analytics` |
-| [`ai-inference-gpu-16`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/ai-inference-gpu-16) | `${GCP_PROJECT_ID}` | `llm-batch-inference-job.yaml` | `ai-inference` |
-| [`hpc-batch-compute-17`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/hpc-batch-compute-17) | `${GCP_PROJECT_ID}` | `hpc-batch-analytics-job.yaml` | `hpc-batch` |
 
 ---
 
@@ -160,11 +118,11 @@ org-mono-repo/
 
 | GCE Scenario Folder | Target Resource | GCP Project | Target Namespace | Complexity Level | Primary Failure Domain |
 |---|---|---|---|---|---|
-| [`gce-vm-01-startup-script-failure`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/gce-vm-01-startup-script-failure) | `prod-legacy-auth-vm` | `${GCP_PROJECT_ID}` | `prod-auth` | 🟢 Simple | Startup Script & Package Egress |
-| [`gce-vm-02-disk-full-journal-lock`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/gce-vm-02-disk-full-journal-lock) | `prod-audit-logger-vm` | `${GCP_PROJECT_ID}` | `prod-analytics` | 🟢 Simple | Boot Disk Capacity & Journal Lock |
-| [`complex-gce-01-mig-healthcheck-iam-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-01-mig-healthcheck-iam-lockout) | `prod-mig-payment-gateway` | `${GCP_PROJECT_ID}` | `prod-payments` | 🔴 Complex | MIG Autohealing & IAM Secret Lockout |
-| [`complex-gce-02-vpc-firewall-routes-blackhole`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-02-vpc-firewall-routes-blackhole) | `prod-edge-bastion-vm` | `${GCP_PROJECT_ID}` | `prod-gateway` | 🔴 Complex | VPC Firewall Deny & Blackhole Route |
-| [`complex-gce-03-ops-agent-log-sink-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-03-ops-agent-log-sink-lockout) | `prod-finops-exporter-vm` | `${GCP_PROJECT_ID}` | `prod-analytics` | 🔴 Complex | Ops Agent Telemetry & IAM Log Writer Lockout |
+| [`gce-vm-01-startup-script-failure`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/gce-vm-01-startup-script-failure) | `prod-legacy-auth-vm` | `${GCP_PROJECT_ID}` | `prod-auth` | 🟢 Simple | Startup script package installation failure without egress network access. |
+| [`gce-vm-02-disk-full-journal-lock`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/gce-vm-02-disk-full-journal-lock) | `prod-audit-logger-vm` | `${GCP_PROJECT_ID}` | `prod-analytics` | 🟢 Simple | Boot disk unrotated logs hit 100% disk capacity, locking `systemd-journald`. |
+| [`complex-gce-01-mig-healthcheck-iam-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-01-mig-healthcheck-iam-lockout) | `prod-mig-payment-gateway` | `${GCP_PROJECT_ID}` | `prod-payments` | 🔴 Complex | Managed Instance Group (MIG) autohealing loop caused by VM service account missing Secret Manager IAM permissions. |
+| [`complex-gce-02-vpc-firewall-routes-blackhole`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-02-vpc-firewall-routes-blackhole) | `prod-edge-bastion-vm` | `${GCP_PROJECT_ID}` | `prod-gateway` | 🔴 Complex | VPC Firewall denies TCP 22/443 ingress while custom static route `0.0.0.0/0` points to a deleted Next Hop Gateway. |
+| [`complex-gce-03-ops-agent-log-sink-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-03-ops-agent-log-sink-lockout) | `prod-finops-exporter-vm` | `${GCP_PROJECT_ID}` | `prod-analytics` | 🔴 Complex | Google Cloud Ops Agent daemon crashes continuously because VM service account lacks `roles/logging.logWriter` IAM permissions. |
 
 ---
 
@@ -175,7 +133,12 @@ org-mono-repo/
 ./scripts/deploy_fleet_event_watchers.sh
 ```
 
-### Reset Fleet State
+### Provision / Reset GCE VM Infrastructure
+```bash
+./scripts/deploy_gce_vms_gcloud.sh
+```
+
+### Reset Entire Fleet & GCE Evaluation State
 ```bash
 ./scripts/enforce_broken_state.sh
 ```

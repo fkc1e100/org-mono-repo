@@ -12,6 +12,9 @@ DEFAULT_PROJECT="$(gcloud config get-value project 2>/dev/null || echo "gca-gke-
 PROJ_2025="${GCP_PROJECT_2025:-${GCP_PROJECT_ID:-$DEFAULT_PROJECT}}"
 PROJ_TEST="${GCP_PROJECT_TEST:-${GCP_PROJECT_ID:-$DEFAULT_PROJECT}}"
 
+# -------------------------------------------------------------------
+# 1. Enforce GKE Fleet Workloads
+# -------------------------------------------------------------------
 declare -A CLUSTER_DIRS=(
   ["cluster-01"]="${PROJ_2025}:us-central1-a:prod-core-api-01"
   ["cluster-02"]="${PROJ_2025}:us-central1-a:prod-user-auth-02"
@@ -34,7 +37,7 @@ declare -A CLUSTER_DIRS=(
 
 for c in "${!CLUSTER_DIRS[@]}"; do
   IFS=":" read -r proj zone dir <<< "${CLUSTER_DIRS[$c]}"
-  echo "=== Enforcing failing evaluation state on $c ($proj / $zone / $dir) ==="
+  echo "=== Enforcing failing evaluation state on GKE $c ($proj / $zone / $dir) ==="
   gcloud container clusters get-credentials "$c" --zone "$zone" --project "$proj"
   
   if [ -f "${REPO_ROOT}/clusters/${dir}/cluster-agent-event-watcher.yaml" ]; then
@@ -96,6 +99,14 @@ for c in "${!CLUSTER_DIRS[@]}"; do
       ;;
   esac
 done
+
+# -------------------------------------------------------------------
+# 2. Enforce GCE VM Compute Infrastructure Declarations
+# -------------------------------------------------------------------
+echo "=== Enforcing GCE VM Compute Infrastructure Declarations ==="
+if [ -d "${REPO_ROOT}/gce" ]; then
+  find "${REPO_ROOT}/gce" -name "*.yaml" -exec kubectl apply -f {} \; || true
+fi
 
 echo "============================================================"
 echo " Fleet reset completed successfully."
