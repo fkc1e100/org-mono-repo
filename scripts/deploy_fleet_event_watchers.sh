@@ -28,7 +28,7 @@ declare -A CLUSTER_DIRS=(
 
 for c in "${!CLUSTER_DIRS[@]}"; do
   IFS=":" read -r proj zone dir <<< "${CLUSTER_DIRS[$c]}"
-  echo "=== Deploying kube-agents event watcher to $c ($proj / $zone / $dir) ==="
+  echo "=== Deploying Enterprise Fleet Event Exporter to $c ($proj / $zone / $dir) ==="
   gcloud container clusters get-credentials "$c" --zone "$zone" --project "$proj"
   
   if [ -f "clusters/$dir/cluster-agent-event-watcher.yaml" ]; then
@@ -36,4 +36,4 @@ for c in "${!CLUSTER_DIRS[@]}"; do
   fi
 done
 
-echo "=== Fleet Event Watcher Deployment Complete ==="
+echo "=== Fleet Event Exporter Deployment Complete ==="

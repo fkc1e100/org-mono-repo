@@ -63,7 +63,7 @@ metadata:
   name: fleet-policy-enforcer
   labels:
 webhooks:
-- name: fleet-policy-enforcer.kube-agents.io
+- name: fleet-policy-enforcer.omniretail.io
   rules:
   - apiGroups: [""]
     apiVersions: ["v1"]
