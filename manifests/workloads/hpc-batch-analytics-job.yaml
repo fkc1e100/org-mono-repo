@@ -13,7 +13,6 @@ metadata:
   name: cpu-hpc-compute-class
   namespace: hpc-batch
   labels:
-    test.kube-agents.io/component: custom-compute-class
 spec:
   priorities:
   - machineType: "c2-standard-60"

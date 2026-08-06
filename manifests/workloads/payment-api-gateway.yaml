@@ -9,7 +9,7 @@ metadata:
   name: webhook-sa
   namespace: webhook-system
   annotations:
-    iam.gke.io/gcp-service-account: non-existent-gsa@gca-gke-2025.iam.gserviceaccount.com
+    iam.gke.io/gcp-service-account: vault-auth-sa@gca-gke-2025.iam.gserviceaccount.com
 ---
 apiVersion: apps/v1
 kind: Deployment

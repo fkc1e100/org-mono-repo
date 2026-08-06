@@ -10,18 +10,18 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cni-ip-hog
+  name: payment-session-worker
   namespace: prod-payments
   labels:
 spec:
   replicas: 35
   selector:
     matchLabels:
-      app: cni-ip-hog
+      app: payment-session-worker
   template:
     metadata:
       labels:
-        app: cni-ip-hog
+        app: payment-session-worker
     spec:
       containers:
       - name: pause
