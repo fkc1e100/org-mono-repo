@@ -19,12 +19,11 @@ spec:
       - name: worker-app
         image: python:3.9-slim
         command: ["python3", "-c", "import time; print('Worker running...'); time.sleep(3600)"]
-        # Intentionally missing CPU requests required by HPA
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: wl-10-hpa-cpu-fail
+  name: queue-worker-hpa
   namespace: default
   labels:
 spec:

@@ -36,7 +36,7 @@ spec:
           allowPrivilegeEscalation: false
       - name: init-gcp-storage-sync
         image: google/cloud-sdk:slim
-        command: ["sh", "-c", "gcloud storage ls gs://nonexistent-analytics-bucket-2025 || { echo 'FATAL: Cannot connect to GCP Cloud Storage bucket'; exit 1; }"]
+        command: ["sh", "-c", "gcloud storage ls gs://analytics-raw-data-2025 || { echo 'FATAL: Cannot connect to GCP Cloud Storage bucket'; exit 1; }"]
       containers:
       - name: worker
         image: nginx:latest

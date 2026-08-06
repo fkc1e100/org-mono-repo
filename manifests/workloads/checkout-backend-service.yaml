@@ -51,7 +51,6 @@ spec:
   policyTypes:
   - Egress
   egress:
-  # Allows HTTP/HTTPS egress to private IP ranges, but blocks DNS port 53 and GCP Metadata IP 169.254.169.254 / GCP Public APIs
   - to:
     - ipBlock:
         cidr: 10.0.0.0/8

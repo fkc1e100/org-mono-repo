@@ -10,7 +10,6 @@ metadata:
   namespace: prod-apps
   labels:
 ---
-# Intentionally missing Role, ClusterRole, and GCP IAM bindings for restricted-sa
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -41,7 +40,7 @@ spec:
           sleep 3600
         envFrom:
         - secretRef:
-            name: missing-api-signing-key
+            name: api-signing-key
         resources:
           requests:
             cpu: 50m
