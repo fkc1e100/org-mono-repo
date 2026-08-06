@@ -1,9 +1,25 @@
 # Organization Fleet Infrastructure & Workload Monorepo (`org-mono-repo`)
 
-Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing multi-cluster GKE fleet infrastructure modules, Compute Engine (GCE) VM declarations, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, and GitHub Actions CI/CD workflows.
+Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo engineered for a **Global Multi-Brand Retail Enterprise** operating under strict regulatory compliance frameworks including **PCI-DSS 4.0, SOC 2 Type II, GDPR / CCPA, ISO/IEC 27001, and SOX Section 404**.
+
+This repository contains multi-cluster GKE fleet infrastructure modules, Compute Engine (GCE) VM declarations, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, and GitHub Actions CI/CD workflows.
 
 > [!NOTE]
 > **GCP Project Portability for Forks**: If you fork this repository, set `export GCP_PROJECT_ID="your-gcp-project-id"` (or `export GCP_PROJECT_2025="..."` and `export GCP_PROJECT_TEST="..."`). All scripts and Terraform modules dynamically adapt to your active GCP project context.
+
+---
+
+## 🏛️ Enterprise Regulatory Compliance Regimes
+
+Our retail platform infrastructure complies with five mandatory enterprise security and privacy frameworks:
+
+1. **💳 PCI-DSS 4.0 (Payment Card Industry Data Security Standard)**: Enforces Cardholder Data Environment (CDE) microsegmentation (`prod-payments`), KMS encryption at rest, TLS 1.3 in-transit, least-privilege Workload Identity, and event logging daemons.
+2. **🛡️ SOC 2 Type II (Security, Availability, Confidentiality)**: Enforces zero-trust NetworkPolicy boundaries, OPA Gatekeeper admission guardrails, automated container vulnerability scanning, and CODEOWNERS PR approval governance.
+3. **🔒 GDPR & CCPA (Global Data Privacy & PII Protection)**: Enforces customer Personally Identifiable Information (PII) data isolation across European and US regional VPC subnets and storage buckets.
+4. **🏢 ISO/IEC 27001 (Information Security Management)**: Standardized infrastructure-as-code (IaC) governance, automated pre-commit hook scanning, and continuous Trivy vulnerability reviews.
+5. **📊 SOX Section 404 (Financial Reporting Systems Integrity)**: Immutable event logging via `cluster-agent-event-watcher` daemons streaming audit logs to tamper-proof GCP Cloud Storage buckets for e-commerce financial transactions.
+
+For complete Architectural Mandates, refer to **[`docs/architecture-board-guidelines.md`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/docs/architecture-board-guidelines.md)**.
 
 ---
 
