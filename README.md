@@ -121,7 +121,8 @@ org-mono-repo/
 ├── manifests/                                 # Kubernetes Manifests & Workload Definitions
 ├── rbac/                                      # Fleet ClusterRoles & ClusterRoleBindings
 ├── docs/                                      # Enterprise Documentation & ADRs
-│   └── adr/
+│   ├── adr/                                   # Architecture Decision Records (ADR-001, ADR-002, ADR-003)
+│   └── architecture-board-guidelines.md       # Architecture Review Board (ARB) 10 Deployment Mandates
 ├── scripts/
 │   ├── deploy_fleet_event_watchers.sh        # Deploys kube-agents watcher daemon across GKE fleet
 │   ├── deploy_gce_vms_gcloud.sh              # Deploys & resets GCE VM infrastructure via gcloud CLI
