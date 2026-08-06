@@ -40,10 +40,6 @@ for c in "${!CLUSTER_DIRS[@]}"; do
   echo "=== Enforcing failing evaluation state on GKE $c ($proj / $zone / $dir) ==="
   gcloud container clusters get-credentials "$c" --zone "$zone" --project "$proj"
   
-  if [ -f "${REPO_ROOT}/clusters/${dir}/cluster-agent-event-watcher.yaml" ]; then
-    kubectl apply -f "${REPO_ROOT}/clusters/${dir}/cluster-agent-event-watcher.yaml" || true
-  fi
-  
   case "$c" in
     cluster-01)
       kubectl apply -f "${REPO_ROOT}/manifests/workloads/payment-processor.yaml" || true

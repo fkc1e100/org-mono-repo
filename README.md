@@ -13,11 +13,11 @@ This repository contains multi-cluster GKE fleet infrastructure modules, Compute
 
 Our retail platform infrastructure complies with five mandatory enterprise security and privacy frameworks:
 
-1. **💳 PCI-DSS 4.0 (Payment Card Industry Data Security Standard)**: Enforces Cardholder Data Environment (CDE) microsegmentation (`prod-payments`), KMS encryption at rest, TLS 1.3 in-transit, least-privilege Workload Identity, and event logging daemons.
+1. **💳 PCI-DSS 4.0 (Payment Card Industry Data Security Standard)**: Enforces Cardholder Data Environment (CDE) microsegmentation (`prod-payments`), KMS encryption at rest, TLS 1.3 in-transit, least-privilege Workload Identity, and audit logging.
 2. **🛡️ SOC 2 Type II (Security, Availability, Confidentiality)**: Enforces zero-trust NetworkPolicy boundaries, OPA Gatekeeper admission guardrails, automated container vulnerability scanning, and CODEOWNERS PR approval governance.
 3. **🔒 GDPR & CCPA (Global Data Privacy & PII Protection)**: Enforces customer Personally Identifiable Information (PII) data isolation across European and US regional VPC subnets and storage buckets.
 4. **🏢 ISO/IEC 27001 (Information Security Management)**: Standardized infrastructure-as-code (IaC) governance, automated pre-commit hook scanning, and continuous Trivy vulnerability reviews.
-5. **📊 SOX Section 404 (Financial Reporting Systems Integrity)**: Immutable event logging via `cluster-agent-event-watcher` daemons streaming audit logs to tamper-proof GCP Cloud Storage buckets for e-commerce financial transactions.
+5. **📊 SOX Section 404 (Financial Reporting Systems Integrity)**: Immutable audit logging streaming audit logs to tamper-proof GCP Cloud Storage buckets for e-commerce financial transactions.
 
 For complete Architectural Mandates, refer to **[`docs/architecture-board-guidelines.md`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/docs/architecture-board-guidelines.md)**.
 
@@ -140,7 +140,6 @@ org-mono-repo/
 │   ├── adr/                                   # Architecture Decision Records (ADR-001, ADR-002, ADR-003)
 │   └── architecture-board-guidelines.md       # Architecture Review Board (ARB) 10 Deployment Mandates
 ├── scripts/
-│   ├── deploy_fleet_event_watchers.sh        # Deploys kube-agents watcher daemon across GKE fleet
 │   ├── deploy_gce_vms_gcloud.sh              # Deploys & resets GCE VM infrastructure via gcloud CLI
 │   └── enforce_broken_state.sh              # Resets both GKE fleet workloads & GCE VM states
 └── default-deny-netpol.yaml
@@ -185,11 +184,6 @@ org-mono-repo/
 ---
 
 ## 🚀 Operations
-
-### Fleet Watcher Deployment
-```bash
-./scripts/deploy_fleet_event_watchers.sh
-```
 
 ### Provision / Reset GCE VM Infrastructure
 ```bash
