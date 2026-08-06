@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "description": "Ground Truth Answer Key for Kube-Agents Autonomous SRE Triage Benchmark",
   "scenarios": {
     "prod-core-api-01": {
@@ -188,6 +188,46 @@
       "target_deployment": "hpc-batch-analytics",
       "symptoms": ["ScaleUpFailed", "Insufficient vCPU Quota"],
       "root_cause": "Workload requests ComputeClass 'hpc-compute-class' requiring 56 vCPUs on c2-standard-60 Spot. GKE Cluster Autoscaler scale-up fails with ZONE_RESOURCE_POOL_EXHAUSTED in us-central1-a."
+    },
+    "prod-legacy-auth-vm": {
+      "scenario_id": "gce-01",
+      "instance_name": "prod-legacy-auth-vm",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "GCE Compute",
+      "target_namespace": "prod-auth",
+      "symptoms": ["HTTP 502 Bad Gateway", "Port 8080 Unreachable"],
+      "root_cause": "Startup script fails during pip installation of missing package without egress access."
+    },
+    "prod-audit-logger-vm": {
+      "scenario_id": "gce-02",
+      "instance_name": "prod-audit-logger-vm",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "GCE Storage / OS",
+      "target_namespace": "prod-analytics",
+      "symptoms": ["No Space Left on Device", "Journald Lockout"],
+      "root_cause": "Boot disk unrotated audit logs consume 100% disk capacity, locking systemd services."
+    },
+    "prod-mig-payment-gateway": {
+      "scenario_id": "gce-complex-01",
+      "mig_name": "prod-mig-payment-gateway",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1",
+      "primary_domain": "GCE Hybrid (MIG, IAM & Autohealing)",
+      "target_namespace": "prod-payments",
+      "symptoms": ["Continuous Instance Recreation Loop", "MIG Unhealthy"],
+      "root_cause": "MIG Autohealing health check fails because VM service account lacks Secret Manager IAM decrypt permissions."
+    },
+    "prod-edge-bastion-vm": {
+      "scenario_id": "gce-complex-02",
+      "instance_name": "prod-edge-bastion-vm",
+      "project_id": "gca-gke-test",
+      "zone": "us-central1-a",
+      "primary_domain": "GCE Networking (VPC Firewall & Routing)",
+      "target_namespace": "prod-gateway",
+      "symptoms": ["SSH Timeout", "Ingress Dropped", "Egress Blackhole"],
+      "root_cause": "ComputeFirewall rule denies TCP 22/443 ingress while custom static route 0.0.0.0/0 points to deleted Next Hop Gateway."
     }
   }
 }

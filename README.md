@@ -1,6 +1,6 @@
 # Organization Fleet Infrastructure & Workload Monorepo (`org-mono-repo`)
 
-Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing multi-cluster GKE fleet infrastructure modules, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, and GitHub Actions CI/CD workflows.
+Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing multi-cluster GKE fleet infrastructure modules, Compute Engine (GCE) VM declarations, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, and GitHub Actions CI/CD workflows.
 
 > [!NOTE]
 > **GCP Project Portability for Forks**: If you fork this repository, set `export GCP_PROJECT_ID="your-gcp-project-id"` (or `export GCP_PROJECT_2025="..."` and `export GCP_PROJECT_TEST="..."`). All scripts and Terraform modules dynamically adapt to your active GCP project context.
@@ -57,11 +57,6 @@ To keep your forked repository continuously synchronized with upstream improveme
    git push origin main --force
    ```
 
-3. **Canonical Workspace Sync**:
-   ```bash
-   rsync -av --delete ./ /path/to/canonical-workspace/ --exclude .git
-   ```
-
 ---
 
 ## 🏛️ Enterprise Monorepo Architecture
@@ -84,6 +79,11 @@ org-mono-repo/
 │           ├── main.tf
 │           ├── variables.tf
 │           └── outputs.tf
+├── gce/                                       # Compute Engine (GCE) VM & Hybrid Compute Infrastructure
+│   ├── gce-vm-01-startup-script-failure/      # Legacy Auth VM startup script package failure
+│   ├── gce-vm-02-disk-full-journal-lock/      # Audit logger VM boot disk capacity & journald lock
+│   ├── complex-gce-01-mig-healthcheck-iam-lockout/ # Managed Instance Group autohealing & IAM lockout
+│   └── complex-gce-02-vpc-firewall-routes-blackhole/ # Edge bastion VPC firewall deny & blackhole route
 ├── gcp-infrastructure/                        # Config Connector (KCC) GCP Resources as Code
 │   ├── database/                              # CloudSQL SQLInstance & SQLDatabase KCC CRDs
 │   ├── iam/                                   # Workload Identity IAMServiceAccount & IAMPolicyBinding
@@ -120,23 +120,6 @@ org-mono-repo/
 │   ├── common/                                # Base fleet event watchers & loadbalancer services
 │   ├── labels/                                # Fleet namespace labeling standards
 │   └── workloads/                             # Production business domain workload manifests
-│       ├── payment-processor.yaml
-│       ├── user-auth-service.yaml
-│       ├── memory-cache-service.yaml
-│       ├── checkout-backend-api.yaml
-│       ├── stateful-postgres-db.yaml
-│       ├── frontend-web-gateway.yaml
-│       ├── api-routing-proxy.yaml
-│       ├── batch-report-worker.yaml
-│       ├── gemma-fine-tuning-job.yaml
-│       ├── queue-worker-service.yaml
-│       ├── payment-api-gateway.yaml
-│       ├── checkout-backend-service.yaml
-│       ├── config-syncer-service.yaml
-│       ├── ha-payment-gateway-service.yaml
-│       ├── analytics-worker-service.yaml
-│       ├── llm-batch-inference-job.yaml
-│       └── hpc-batch-analytics-job.yaml
 ├── rbac/                                      # Fleet ClusterRoles & ClusterRoleBindings
 ├── docs/                                      # Enterprise Documentation & ADRs
 │   └── adr/
@@ -169,6 +152,17 @@ org-mono-repo/
 | [`prod-analytics-store-15`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-analytics-store-15) | `${GCP_PROJECT_ID}` | `analytics-worker-service.yaml` | `prod-analytics` |
 | [`ai-inference-gpu-16`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/ai-inference-gpu-16) | `${GCP_PROJECT_ID}` | `llm-batch-inference-job.yaml` | `ai-inference` |
 | [`hpc-batch-compute-17`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/hpc-batch-compute-17) | `${GCP_PROJECT_ID}` | `hpc-batch-analytics-job.yaml` | `hpc-batch` |
+
+---
+
+## 🖥️ Compute Engine (GCE) VM Portfolio (4 Environments)
+
+| GCE Scenario Folder | Target Resource | GCP Project | Target Namespace | Complexity Level | Primary Failure Domain |
+|---|---|---|---|---|---|
+| [`gce-vm-01-startup-script-failure`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/gce-vm-01-startup-script-failure) | `prod-legacy-auth-vm` | `${GCP_PROJECT_ID}` | `prod-auth` | 🟢 Simple | Startup Script & Package Dependency Egress |
+| [`gce-vm-02-disk-full-journal-lock`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/gce-vm-02-disk-full-journal-lock) | `prod-audit-logger-vm` | `${GCP_PROJECT_ID}` | `prod-analytics` | 🟢 Simple | Boot Disk Capacity & Systemd Journal Lock |
+| [`complex-gce-01-mig-healthcheck-iam-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-01-mig-healthcheck-iam-lockout) | `prod-mig-payment-gateway` | `${GCP_PROJECT_ID}` | `prod-payments` | 🔴 Complex | MIG Autohealing Loop & IAM Secret Manager Lockout |
+| [`complex-gce-02-vpc-firewall-routes-blackhole`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-02-vpc-firewall-routes-blackhole) | `prod-edge-bastion-vm` | `${GCP_PROJECT_ID}` | `prod-gateway` | 🔴 Complex | VPC Firewall Deny & Static Route Blackhole |
 
 ---
 
