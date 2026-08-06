@@ -7,56 +7,54 @@ Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing
 
 ---
 
-## 🚀 Getting Started: Fork & Sync Guide
+## 🚀 Getting Started: GitOps & IaC Provisioning
 
-### Option 1: Standard Fork & Provisioning
+### Option 1: ArgoCD GitOps Deployment (KCC Declarative Sync)
 
-1. **Fork & Clone**:
-   Fork `https://github.com/fkc1e100/org-mono-repo` on GitHub and clone locally:
-   ```bash
-   git clone https://github.com/<your-github-username>/org-mono-repo.git
-   cd org-mono-repo
-   ```
+Because all GCE Compute Engine resources under [`gce/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce) are declared using Google Cloud Config Connector (KCC) Kubernetes CRDs (`kind: ComputeInstance`, `kind: ComputeRegionInstanceGroupManager`, `kind: ComputeFirewall`), **ArgoCD natively manages and continuously reconciles GCE infrastructure directly from Git**:
 
-2. **Set GCP Authentication & Target Project**:
-   ```bash
-   gcloud auth login
-   gcloud auth application-default login
-   export GCP_PROJECT_ID="your-gcp-project-id"
-   ```
+```bash
+# Apply ArgoCD Application to continuously reconcile GCE infrastructure
+kubectl apply -f gce/argocd-app.yaml
+```
 
-3. **Provision Fleet Cluster Infrastructure (Terraform)**:
+---
+
+### Option 2: Terraform IaC Provisioning
+
+For teams using Terraform CLI or Terraform Controller:
+
+1. **GKE Cluster Provisioning**:
    ```bash
    cd clusters/prod-core-api-01/terraform
    terraform init
    terraform apply -var="project_id=${GCP_PROJECT_ID}"
    ```
 
-4. **Deploy Fleet GKE & GCE Infrastructure**:
-   ```bash
-   ./scripts/deploy_fleet_event_watchers.sh
-   ./scripts/deploy_gce_vms_gcloud.sh
-   ./scripts/enforce_broken_state.sh
+2. **GCE Instance Provisioning**:
+   Use the reusable GCE module at [`terraform/modules/gce-instance`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/terraform/modules/gce-instance):
+   ```hcl
+   module "legacy_auth_vm" {
+     source        = "../../terraform/modules/gce-instance"
+     project_id    = var.project_id
+     instance_name = "prod-legacy-auth-vm"
+     machine_type  = "e2-standard-2"
+   }
    ```
 
 ---
 
-### Option 2: Upstream Sync Pattern (Keeping Forks Updated)
+### Option 3: Upstream Sync Pattern (Keeping Forks Updated)
 
 To keep your forked repository continuously synchronized with upstream improvements:
 
-1. **Configure Upstream Remote**:
-   ```bash
-   git remote add upstream https://github.com/fkc1e100/org-mono-repo.git
-   ```
-
-2. **Sync Upstream Updates**:
-   ```bash
-   git fetch upstream
-   git checkout main
-   git rebase upstream/main
-   git push origin main --force
-   ```
+```bash
+git remote add upstream https://github.com/fkc1e100/org-mono-repo.git
+git fetch upstream
+git checkout main
+git rebase upstream/main
+git push origin main --force
+```
 
 ---
 
@@ -76,11 +74,10 @@ org-mono-repo/
 ├── .pre-commit-config.yaml                    # Local workstation git pre-commit hooks
 ├── terraform/                                 # Standardized Reusable IaC Core
 │   └── modules/
-│       └── gke-cluster/                       # Modular GKE cluster, Workload Identity & nodepool IaC
-│           ├── main.tf
-│           ├── variables.tf
-│           └── outputs.tf
+│       ├── gke-cluster/                       # Reusable GKE cluster & nodepool Terraform module
+│       └── gce-instance/                      # Reusable GCE VM Compute Engine Terraform module
 ├── gce/                                       # Compute Engine (GCE) VM & Hybrid Compute Infrastructure
+│   ├── argocd-app.yaml                        # ArgoCD GitOps Application for GCE continuous sync
 │   ├── gce-vm-01-startup-script-failure/      # Legacy Auth VM startup script package failure
 │   ├── gce-vm-02-disk-full-journal-lock/      # Audit logger VM boot disk capacity & journald lock
 │   ├── complex-gce-01-mig-healthcheck-iam-lockout/ # Managed Instance Group autohealing & IAM lockout
@@ -98,8 +95,6 @@ org-mono-repo/
 │       ├── enforce-allowed-registries.yaml
 │       └── require-finops-labels.yaml
 ├── tenants/                                   # Multi-Tenancy Self-Service Workspace Vending
-│   ├── team-analytics/                        # Namespace, ResourceQuota & GPU allocation
-│   └── team-checkout/                         # Namespace, ResourceQuota & PodSecurity Restricted
 ├── clusters/                                  # Fleet Cluster Directories & IaC Configurations
 ├── manifests/                                 # Kubernetes Manifests & Workload Definitions
 ├── rbac/                                      # Fleet ClusterRoles & ClusterRoleBindings
