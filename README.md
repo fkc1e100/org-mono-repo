@@ -5,7 +5,7 @@ Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo engineered
 This repository contains multi-cluster GKE fleet infrastructure modules, Compute Engine (GCE) VM declarations, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, and GitHub Actions CI/CD workflows.
 
 > [!NOTE]
-> **Zero-Prerequisite Onboarding**: All scripts (`deploy_gce_vms_terraform.sh`, `enforce_broken_state.sh`, `setup_argocd_gitops.sh`) include an automated **GCP Auth Check & Project Wizard**. If not logged in, they automatically run `gcloud auth login` and `gcloud auth application-default login`, then prompt interactively for single or dual project IDs.
+> **Zero-Prerequisite Onboarding**: All scripts (`deploy_gce_vms_terraform.sh`, `enforce_broken_state.sh`, `setup_argocd_gitops.sh`, `sync_repo_to_destination.sh`) include an automated **GCP Auth Check & Project Wizard**. If not logged in, they automatically run `gcloud auth login` and `gcloud auth application-default login`, then prompt interactively for single or dual project IDs.
 
 ---
 
@@ -47,9 +47,22 @@ GKE Fleet Microservices                  Backend GCE VM Infrastructure
 
 ## 🚀 Getting Started: GitOps & IaC Provisioning
 
-### Option 1: Automated Terraform IaC Deployment (Recommended)
+### Option 1: Sync & Deploy to Destination Repository (`gke-fleet-iac`)
 
-To provision or reset all GCE VM instances and cluster resources via Terraform (includes automated `gcloud auth` login and project wizard):
+To mirror `org-mono-repo` to a target infrastructure repository (e.g. `gke-fleet-iac`), configure Argo CD GitOps monitoring, and trigger keyless GitHub Actions Terraform CI/CD:
+
+Refer to the complete guide: **[`docs/operational-blueprint-sync-gitops.md`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/docs/operational-blueprint-sync-gitops.md)**
+
+```bash
+# 1-Command Automated Repository Mirroring & Sync
+./scripts/sync_repo_to_destination.sh fkc1e100 gke-fleet-iac
+```
+
+---
+
+### Option 2: Automated Terraform IaC Deployment (Local Workstation)
+
+To provision or reset all GCE VM instances and cluster resources via Terraform:
 
 ```bash
 # Provision / Reset all GCE VM instances via automated Terraform IaC
@@ -61,7 +74,7 @@ To provision or reset all GCE VM instances and cluster resources via Terraform (
 
 ---
 
-### Option 2: Automated ArgoCD GitOps Continuous Sync
+### Option 3: Automated ArgoCD GitOps Continuous Sync
 
 For GitOps-driven environments, run the 1-command ArgoCD setup script:
 
@@ -72,48 +85,17 @@ For GitOps-driven environments, run the 1-command ArgoCD setup script:
 
 ---
 
-### Option 3: Syncing into an Existing Repository (Git Remote / Subtree)
-
-#### Method A: Upstream Remote Sync (For Existing Forked Repositories)
-To continuously synchronize upstream improvements into an existing repository:
-```bash
-# 1. Add org-mono-repo as an upstream remote
-git remote add upstream https://github.com/fkc1e100/org-mono-repo.git
-
-# 2. Fetch latest changes from upstream
-git fetch upstream
-
-# 3. Rebase upstream main into your active main branch
-git checkout main
-git rebase upstream/main
-
-# 4. Push updated main to your remote repository
-git push origin main --force
-```
-
-#### Method B: Git Subtree Sync (Integrating into an Existing Monorepo Subfolder)
-To import `org-mono-repo` as a subfolder (e.g. `eval-platform/`) within an existing enterprise monorepo:
-```bash
-# 1. Add org-mono-repo as a subfolder in your existing repository
-git subtree add --prefix=eval-platform https://github.com/fkc1e100/org-mono-repo.git main --squash
-
-# 2. Pull future updates from upstream into your subfolder
-git subtree pull --prefix=eval-platform https://github.com/fkc1e100/org-mono-repo.git main --squash
-```
-
----
-
 ## 🏛️ Enterprise Monorepo Architecture
 
 ```text
 org-mono-repo/
-├── .github/                                    # Enterprise CI/CD & Automated Review Bots
+├── .github/
 │   ├── dependabot.yml                         # Dependabot automated dependency review bot
 │   ├── workflows/
+│   │   ├── terraform-apply.yaml               # Keyless GCP Workload Identity Terraform CI/CD
 │   │   ├── terraform-ci.yaml                  # Terraform format, tflint, and validation checks
 │   │   ├── policy-scan.yaml                   # Conftest policy-as-code validation on PRs
 │   │   ├── trivy-security-bot.yaml            # Trivy automated security review bot
-│   │   ├── pr-title-linter.yaml               # Semantic PR title linter bot
 │   │   └── stale-bot.yaml                     # Automated stale PR and issue triage bot
 │   └── CODEOWNERS                             # Granular PR approval enforcement
 ├── .pre-commit-config.yaml                    # Local workstation git pre-commit hooks
@@ -123,6 +105,7 @@ org-mono-repo/
 │       └── gce-instance/                      # Reusable GCE VM Compute Engine Terraform module
 ├── gce/                                       # Compute Engine (GCE) VM & Hybrid Compute Infrastructure
 │   ├── argocd-app.yaml                        # ArgoCD GitOps Application for GCE continuous sync
+│   ├── argocd-fleet-apps.yaml                 # ArgoCD Application Suite for Workloads, Clusters, and RBAC
 │   ├── terraform/                             # Root Terraform Workspace for GCE Instances (main.tf)
 │   ├── prod-auth-legacy-vm/                   # Legacy Auth GCE VM infrastructure & startup script
 │   ├── prod-audit-logger-vm/                  # Audit logger GCE VM infrastructure & disk spooling
@@ -146,8 +129,10 @@ org-mono-repo/
 ├── rbac/                                      # Fleet ClusterRoles & ClusterRoleBindings
 ├── docs/                                      # Enterprise Documentation & ADRs
 │   ├── adr/                                   # Architecture Decision Records (ADR-001, ADR-002, ADR-003)
-│   └── architecture-board-guidelines.md       # Architecture Review Board (ARB) 10 Deployment Mandates
+│   ├── architecture-board-guidelines.md       # Architecture Review Board (ARB) 10 Deployment Mandates
+│   └── operational-blueprint-sync-gitops.md  # Complete Operational Blueprint for Sync & GitOps
 ├── scripts/
+│   ├── sync_repo_to_destination.sh           # Automated repository mirror & stale PR/issue cleanup script
 │   ├── setup_argocd_gitops.sh                 # Automated ArgoCD validator, installer & fork binder
 │   ├── deploy_gce_vms_terraform.sh           # Automated Terraform IaC provisioner for GCE instances
 │   └── enforce_broken_state.sh              # Resets both GKE fleet workloads & GCE VM states
@@ -193,6 +178,11 @@ org-mono-repo/
 ---
 
 ## 🚀 Operations
+
+### Mirror & Sync to Destination Repository (`gke-fleet-iac`)
+```bash
+./scripts/sync_repo_to_destination.sh fkc1e100 gke-fleet-iac
+```
 
 ### Setup ArgoCD GitOps Continuous Sync
 ```bash
