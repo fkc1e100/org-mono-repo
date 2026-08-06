@@ -1,14 +1,26 @@
 # Enterprise Architecture Review Board (ARB) Mandate & Deployment Standards
 
 **Organization**: OmniRetail Global Infrastructure & Platform Engineering  
-**Document Version**: 2.4  
+**Document Version**: 3.0 (PCI-DSS 4.0 Enhanced)  
 **Classification**: Enterprise Internal Infrastructure Standard  
 
 ---
 
 ## 🏛️ Executive Summary
 
-This document establishes the **10 Mandatory Infrastructure & Deployment Rules** established by the Enterprise Architecture Review Board (ARB). All infrastructure operators, platform engineers, and application developers deploying resources to GKE fleets or Google Compute Engine (GCE) within `org-mono-repo` MUST comply with these architectural standards.
+This document establishes the **10 Mandatory Infrastructure & Deployment Rules** and **PCI-DSS 4.0 Cardholder Data Environment (CDE) Governance Rules** established by the Enterprise Architecture Review Board (ARB). All infrastructure operators, platform engineers, and application developers deploying resources to GKE fleets or Google Compute Engine (GCE) within `org-mono-repo` MUST comply with these architectural standards.
+
+---
+
+## 💳 PCI-DSS 4.0 Cardholder Data Environment (CDE) Mandates
+
+For all workloads operating within PCI-scoped payment namespaces (`prod-payments`, `prod-checkout`):
+
+1. **PCI Requirement 1 (CDE Microsegmentation)**: Microservices handling Cardholder Data (CHD) MUST operate in isolated CDE namespaces (`prod-payments`). Direct ingress from non-CDE namespaces is blocked via zero-trust NetworkPolicies.
+2. **PCI Requirement 3 & 4 (Encryption at Rest & In-Transit)**: Payment data stored in Cloud Storage or databases MUST use Customer-Managed Encryption Keys (CMEK) via GCP KMS (`KMSCryptoKey`). All intra-cluster and external communication MUST enforce TLS 1.3 encryption.
+3. **PCI Requirement 7 & 8 (Least Privilege IAM & RBAC)**: Kubernetes ServiceAccounts in CDE namespaces MUST use granular Workload Identity IAM roles. `cluster-admin` bindings and shared service accounts are strictly prohibited.
+4. **PCI Requirement 10 (Audit Logging & Event Daemon Watchers)**: All Kubernetes API server events, pod mutations, and security events in CDE namespaces MUST be continuously ingested by `cluster-agent-event-watcher` daemons and streamed to immutable GCS audit log sinks.
+5. **PCI Requirement 11 (Automated CVE Vulnerability Scanning)**: Container images deployed to `prod-payments` MUST be scanned for CVEs via Trivy/Container Analysis pipelines. Images containing Critical CVEs are rejected at admission time by OPA Gatekeeper.
 
 ---
 
