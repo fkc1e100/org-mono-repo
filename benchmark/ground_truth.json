@@ -1,5 +1,5 @@
 {
-  "version": "1.2",
+  "version": "1.3",
   "description": "Ground Truth Answer Key for Kube-Agents Autonomous SRE Triage Benchmark",
   "scenarios": {
     "prod-core-api-01": {
@@ -189,8 +189,9 @@
       "symptoms": ["ScaleUpFailed", "Insufficient vCPU Quota"],
       "root_cause": "Workload requests ComputeClass 'hpc-compute-class' requiring 56 vCPUs on c2-standard-60 Spot. GKE Cluster Autoscaler scale-up fails with ZONE_RESOURCE_POOL_EXHAUSTED in us-central1-a."
     },
-    "prod-legacy-auth-vm": {
+    "prod-auth-legacy-vm": {
       "scenario_id": "gce-01",
+      "folder_name": "prod-auth-legacy-vm",
       "instance_name": "prod-legacy-auth-vm",
       "project_id": "gca-gke-2025",
       "zone": "us-central1-a",
@@ -201,6 +202,7 @@
     },
     "prod-audit-logger-vm": {
       "scenario_id": "gce-02",
+      "folder_name": "prod-audit-logger-vm",
       "instance_name": "prod-audit-logger-vm",
       "project_id": "gca-gke-2025",
       "zone": "us-central1-a",
@@ -209,8 +211,9 @@
       "symptoms": ["No Space Left on Device", "Journald Lockout"],
       "root_cause": "Boot disk unrotated audit logs consume 100% disk capacity, locking systemd services."
     },
-    "prod-mig-payment-gateway": {
+    "prod-payment-mig-gateway": {
       "scenario_id": "gce-complex-01",
+      "folder_name": "prod-payment-mig-gateway",
       "mig_name": "prod-mig-payment-gateway",
       "project_id": "gca-gke-2025",
       "zone": "us-central1",
@@ -219,8 +222,9 @@
       "symptoms": ["Continuous Instance Recreation Loop", "MIG Unhealthy"],
       "root_cause": "MIG Autohealing health check fails because VM service account lacks Secret Manager IAM decrypt permissions."
     },
-    "prod-edge-bastion-vm": {
+    "prod-edge-bastion-gateway": {
       "scenario_id": "gce-complex-02",
+      "folder_name": "prod-edge-bastion-gateway",
       "instance_name": "prod-edge-bastion-vm",
       "project_id": "gca-gke-test",
       "zone": "us-central1-a",
@@ -229,8 +233,9 @@
       "symptoms": ["SSH Timeout", "Ingress Dropped", "Egress Blackhole"],
       "root_cause": "ComputeFirewall rule denies TCP 22/443 ingress while custom static route 0.0.0.0/0 points to deleted Next Hop Gateway."
     },
-    "prod-finops-exporter-vm": {
+    "prod-finops-telemetry-exporter": {
       "scenario_id": "gce-complex-03",
+      "folder_name": "prod-finops-telemetry-exporter",
       "instance_name": "prod-finops-exporter-vm",
       "project_id": "gca-gke-2025",
       "zone": "us-central1-a",
