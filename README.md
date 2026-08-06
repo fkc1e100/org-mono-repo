@@ -61,7 +61,7 @@ org-mono-repo/
 ├── manifests/                                 # Kubernetes Manifests & Workload Definitions
 │   ├── common/                                # Base fleet event watchers & loadbalancer services
 │   ├── labels/                                # Fleet namespace labeling standards
-│   └── workloads/                             # Business domain workload manifests (sanitized)
+│   └── workloads/                             # Production business domain workload manifests
 │       ├── payment-processor.yaml
 │       ├── user-auth-service.yaml
 │       ├── memory-cache-service.yaml
@@ -82,6 +82,9 @@ org-mono-repo/
 ├── rbac/                                      # Fleet ClusterRoles & ClusterRoleBindings
 ├── docs/                                      # Enterprise Documentation & ADRs
 │   └── adr/
+│       ├── ADR-001-monorepo-layout.md
+│       ├── ADR-002-config-connector-adoption.md
+│       └── ADR-003-custom-compute-classes-for-gpu-stockout.md
 ├── scripts/
 │   ├── deploy_fleet_event_watchers.sh        # Deploys kube-agents watcher daemon across fleet
 │   └── enforce_broken_state.sh              # Resets fleet workloads to evaluation states
@@ -91,6 +94,9 @@ org-mono-repo/
 ---
 
 ## ⚡ Fleet Cluster Portfolio (17 Clusters)
+
+> [!NOTE]
+> All cluster names and workload manifests use realistic production business domain identifiers (`prod-checkout`, `payment-processor`, `user-auth-service`). Scenario ground-truth diagnostic answers for AI SRE benchmarking are stored separately in [`benchmark/ground_truth.json`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/benchmark/ground_truth.json).
 
 | Cluster Folder Name | GCP Project | Target Workload Manifest | Target Namespace | Scenario ID |
 |---|---|---|---|---|
