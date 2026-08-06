@@ -16,14 +16,10 @@ org-mono-repo/
 │   └── storage/               # StorageBucket & Access Control KCC CRDs
 ├── clusters/                  # Per-Cluster Deployments & Terraform IaC
 │   ├── gca-gke-2025/          # GCP Project gca-gke-2025 cluster definitions
-│   │   ├── cluster-01/
-│   │   │   ├── cluster-agent-event-watcher.yaml
-│   │   │   └── terraform/     # Modular Terraform IaC (main.tf, variables.tf, outputs.tf)
-│   │   ├── complex-01/
-│   │   │   ├── README.md
-│   │   │   ├── cluster-agent-event-watcher.yaml
-│   │   │   └── terraform/     # Mutating Webhook Deadlock cluster IaC
-│   │   └── complex-02/
+│   │   ├── cluster-01 .. cluster-05, 08, 09
+│   │   ├── complex-01/       # Mutating Webhook Deadlock & Secret Manager WI
+│   │   ├── complex-02/       # NetPol DNS Egress Isolation & GCS Endpoint Block
+│   │   └── complex-06/       # Spot GPU Stockout & Autoscaling ScaleUp Deadlock
 │   └── gca-gke-test/          # GCP Project gca-gke-test cluster definitions
 │       ├── cluster-06, 07, 10
 │       ├── complex-03/       # Artifact Registry Auth & SA Token Lockout terraform & manifests
@@ -42,34 +38,6 @@ org-mono-repo/
 
 ---
 
-## ☁️ Declarative GCP Infrastructure as Code (`gcp-infrastructure/`)
-
-All GCP Cloud Resources supporting GKE fleet workloads are managed declaratively using **Google Cloud Config Connector (KCC)**:
-
-| Path | KCC Kind | GCP Cloud Component | Description |
-|---|---|---|---|
-| [`gcp-infrastructure/iam/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gcp-infrastructure/iam/workload-identity-bindings.yaml) | `IAMServiceAccount`, `IAMPolicyBinding` | Workload Identity | Binds GKE Kubernetes Service Accounts to GCP IAM Service Accounts |
-| [`gcp-infrastructure/storage/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gcp-infrastructure/storage/gcs-buckets.yaml) | `StorageBucket`, `StorageBucketAccessControl` | Cloud Storage | Manages CMEK-encrypted GCS buckets for application datasets |
-| [`gcp-infrastructure/database/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gcp-infrastructure/database/cloudsql-instance.yaml) | `SQLInstance`, `SQLDatabase` | Cloud SQL (PostgreSQL) | Provisions regional HA PostgreSQL instances connected to GKE Private VPC |
-| [`gcp-infrastructure/kms/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gcp-infrastructure/kms/kms-keyring.yaml) | `KMSKeyRing`, `KMSCryptoKey` | Cloud KMS | Manages 90-day rotating Customer-Managed Encryption Keys (CMEK) |
-| [`gcp-infrastructure/networking/`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gcp-infrastructure/networking/vpc-network.yaml) | `ComputeNetwork`, `ComputeSubnetwork` | VPC Networking | Defines custom VPC networks, GKE pod/service secondary IP CIDR ranges |
-
----
-
-## 🏗️ Per-Cluster Terraform Provisioning
-
-Each cluster under `clusters/<project_id>/<cluster_name>/terraform/` contains its dedicated Infrastructure-as-Code declaration:
-
-```text
-clusters/<project_id>/<cluster_name>/terraform/
-├── main.tf           # GKE Cluster & Node Pool resources
-├── variables.tf      # Configurable project, region, zone, machine type & node count
-├── outputs.tf        # Cluster endpoint & gcloud get-credentials command
-└── terraform.tfvars  # Cluster-specific variable assignments
-```
-
----
-
 ## ⚡ Failure Scenarios & Cluster Mapping
 
 | Cluster Name | GCP Project | Domain Failures | Scenario Summary |
@@ -83,6 +51,7 @@ clusters/<project_id>/<cluster_name>/terraform/
 | `complex-03` | `gca-gke-test` | Multi-Domain | **Artifact Registry Auth & RBAC Lockout**: Private container image pull failure from Google Artifact Registry (`us-docker.pkg.dev`), missing automount SA token, and zero RBAC permissions. |
 | `complex-04` | `gca-gke-test` | Multi-Domain | **Scheduling Deadlock & CNI IP Starvation**: Strict `podAntiAffinity` on 2-node cluster with 4 vCPU requests + 35 pods exhausting node CNI Pod IP allocation + GCP Internal Load Balancer IP failure. |
 | `complex-05` | `gca-gke-test` | Multi-Domain | **PD RWO Storage Lockout & Sysctl Violation**: GCE Persistent Disk ReadWriteOnce multi-attach deadlock across nodes + unprivileged `sysctl` initContainer failure + GCS bucket sync failure. |
+| `complex-06` | `gca-gke-2025` | Compute / Capacity | **Spot GPU Stockout & Autoscaling ScaleUp Failure**: Workload requests 8x NVIDIA A100 Spot GPUs (`a2-ultragpu-1g`). GKE Cluster Autoscaler scale-up fails with `ZONE_RESOURCE_POOL_EXHAUSTED` / stockout in `us-central1-a`. |
 
 ---
 
