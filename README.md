@@ -61,16 +61,14 @@ To provision or reset all GCE VM instances and cluster resources via Terraform:
 
 ---
 
-### Option 2: ArgoCD GitOps Continuous Sync
+### Option 2: Automated ArgoCD GitOps Deployment
 
-For GitOps-driven environments utilizing ArgoCD:
+For GitOps-driven environments, run the 1-command ArgoCD setup script. It automatically validates if ArgoCD is installed (installing it if missing), detects your active GitHub repo/fork URL, binds `gce/argocd-app.yaml` to your fork, and applies the GitOps Application:
 
-1. **ArgoCD Cluster Setup**: Ensure ArgoCD is installed in your management cluster (`kubectl get ns argocd`).
-2. **Repository URL Configuration**: If operating from a fork, update line 11 of [`gce/argocd-app.yaml`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/argocd-app.yaml) to point `repoURL` to your fork (`https://github.com/<your-username>/org-mono-repo.git`).
-3. **Apply ArgoCD Application**:
-   ```bash
-   kubectl apply -f gce/argocd-app.yaml -n argocd
-   ```
+```bash
+# Automated ArgoCD installation, fork binding & GitOps Application sync
+./scripts/setup_argocd_gitops.sh
+```
 
 ---
 
@@ -133,6 +131,7 @@ org-mono-repo/
 │   ├── adr/                                   # Architecture Decision Records (ADR-001, ADR-002, ADR-003)
 │   └── architecture-board-guidelines.md       # Architecture Review Board (ARB) 10 Deployment Mandates
 ├── scripts/
+│   ├── setup_argocd_gitops.sh                 # Automated ArgoCD validator, installer & fork binder
 │   ├── deploy_gce_vms_terraform.sh           # Automated Terraform IaC provisioner for GCE instances
 │   └── enforce_broken_state.sh              # Resets both GKE fleet workloads & GCE VM states
 └── default-deny-netpol.yaml
@@ -177,6 +176,11 @@ org-mono-repo/
 ---
 
 ## 🚀 Operations
+
+### Setup ArgoCD GitOps Continuous Sync
+```bash
+./scripts/setup_argocd_gitops.sh
+```
 
 ### Provision / Reset GCE VM Infrastructure via Terraform
 ```bash
