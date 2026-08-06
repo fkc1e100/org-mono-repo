@@ -72,16 +72,33 @@ For GitOps-driven environments, run the 1-command ArgoCD setup script:
 
 ---
 
-### Option 3: Upstream Sync Pattern (Keeping Forks Updated)
+### Option 3: Syncing into an Existing Repository (Git Remote / Subtree)
 
-To keep your forked repository continuously synchronized with upstream improvements:
-
+#### Method A: Upstream Remote Sync (For Existing Forked Repositories)
+To continuously synchronize upstream improvements into an existing repository:
 ```bash
+# 1. Add org-mono-repo as an upstream remote
 git remote add upstream https://github.com/fkc1e100/org-mono-repo.git
+
+# 2. Fetch latest changes from upstream
 git fetch upstream
+
+# 3. Rebase upstream main into your active main branch
 git checkout main
 git rebase upstream/main
+
+# 4. Push updated main to your remote repository
 git push origin main --force
+```
+
+#### Method B: Git Subtree Sync (Integrating into an Existing Monorepo Subfolder)
+To import `org-mono-repo` as a subfolder (e.g. `eval-platform/`) within an existing enterprise monorepo:
+```bash
+# 1. Add org-mono-repo as a subfolder in your existing repository
+git subtree add --prefix=eval-platform https://github.com/fkc1e100/org-mono-repo.git main --squash
+
+# 2. Pull future updates from upstream into your subfolder
+git subtree pull --prefix=eval-platform https://github.com/fkc1e100/org-mono-repo.git main --squash
 ```
 
 ---
