@@ -30,7 +30,8 @@ org-mono-repo/
 │   ├── complex-03-gar-auth-sa-token-lockout/
 │   ├── complex-04-pod-affinity-cni-ip-starvation/
 │   ├── complex-05-pd-rwo-multiattach-sysctl/
-│   └── complex-06-spot-gpu-stockout-fallback/
+│   ├── complex-06-spot-gpu-stockout-fallback/
+│   └── complex-07-cpu-stockout-compute-class/
 ├── manifests/
 │   ├── common/                               # Fleet base event watchers & LB services
 │   ├── labels/                               # Fleet namespace labeling standards
@@ -50,8 +51,8 @@ org-mono-repo/
 |---|---|---|---|
 | [`cluster-01-ip-exhaustion-crashloop`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-01-ip-exhaustion-crashloop) | `gca-gke-2025` | Workload | Pod CrashLoopBackOff & Subnet IP Exhaustion |
 | [`cluster-02-private-registry-auth-fail`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-02-private-registry-auth-fail) | `gca-gke-2025` | Workload | Private Container Image Pull Authentication Failure |
-| [`cluster-03-oomkilled-memory-limit`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-03-oomkilled-memory-limit) | `gca-gke-2025` | Workload | Container Memory Limit Exceeded (OOMKilled Exit Code 137) |
-| [`cluster-04-missing-secret-key-crash`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-04-missing-secret-key-crash) | `gca-gke-2025` | Workload | Container Environment Missing Secret Key (`CreateContainerConfigError`) |
+| [`cluster-03-oomkilled-memory-limit`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-03-oomkilled-memory-limit) | `gca-gke-2025` | Workload | Container Memory Limit Exceeded (`OOMKilled` Exit Code 137) |
+| [`cluster-04-missing-secret-key-crash`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-04-missing-secret-key-crash) | `gca-gke-2025` | Workload | Missing Secret Key in Env (`CreateContainerConfigError`) |
 | [`cluster-05-pvc-unbound-storageclass`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-05-pvc-unbound-storageclass) | `gca-gke-2025` | Storage | PersistentVolumeClaim Pending due to Non-Existent StorageClass |
 | [`cluster-06-ingress-tls-cert-missing`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-06-ingress-tls-cert-missing) | `gca-gke-test` | Ingress | Ingress Routing Failure due to Missing TLS Certificate Secret |
 | [`cluster-07-liveness-probe-failure`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-07-liveness-probe-failure) | `gca-gke-test` | Workload | Liveness Probe Port Misconfiguration & Continuous Container Restarts |
@@ -59,11 +60,12 @@ org-mono-repo/
 | [`cluster-09-flex-dws-obtainability-timeout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-09-flex-dws-obtainability-timeout) | `gca-gke-2025` | Workload | Flex DWS Start Obtainability Timeout |
 | [`cluster-10-hpa-cpu-metric-missing`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/cluster-10-hpa-cpu-metric-missing) | `gca-gke-test` | Autoscaling | HorizontalPodAutoscaler Target Deployment Missing CPU Resource Requests |
 | [`complex-01-webhook-deadlock-wi-auth`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-01-webhook-deadlock-wi-auth) | `gca-gke-2025` | Multi-Domain | **Webhook Deadlock & WI Auth**: `MutatingWebhookConfiguration` fails on unreachable backend pod stuck in Workload Identity Secret Manager auth failure. |
-| [`complex-02-dns-netpol-gcs-block`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-02-dns-netpol-gcs-block) | `gca-gke-2025` | Multi-Domain | **NetworkPolicy DNS & GCS Block**: Egress policy drops DNS port 53 & GCP Metadata (`169.254.169.254`), causing host resolution failure & Cloud Storage API timeouts. |
-| [`complex-03-gar-auth-sa-token-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-03-gar-auth-sa-token-lockout) | `gca-gke-test` | Multi-Domain | **Artifact Registry Auth & RBAC Lockout**: Private container image pull failure from Google Artifact Registry (`us-docker.pkg.dev`), missing automount SA token, and zero RBAC permissions. |
-| [`complex-04-pod-affinity-cni-ip-starvation`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-04-pod-affinity-cni-ip-starvation) | `gca-gke-test` | Multi-Domain | **Scheduling Deadlock & CNI IP Starvation**: Strict `podAntiAffinity` on 2-node cluster with 4 vCPU requests + 35 pods exhausting node CNI Pod IP allocation + GCP Internal Load Balancer IP failure. |
-| [`complex-05-pd-rwo-multiattach-sysctl`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-05-pd-rwo-multiattach-sysctl) | `gca-gke-test` | Multi-Domain | **PD RWO Storage Lockout & Sysctl Violation**: GCE Persistent Disk ReadWriteOnce multi-attach deadlock across nodes + unprivileged `sysctl` initContainer failure + GCS bucket sync failure. |
-| [`complex-06-spot-gpu-stockout-fallback`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-06-spot-gpu-stockout-fallback) | `gca-gke-2025` | Compute / Capacity | **Spot GPU Stockout & ComputeClass Fallback**: Workload requests `a100-gpu-class` ComputeClass with Spot A100 GPUs. GKE Cluster Autoscaler scale-up fails with `ZONE_RESOURCE_POOL_EXHAUSTED` / stockout in `us-central1-a`. |
+| [`complex-02-dns-netpol-gcs-block`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-02-dns-netpol-gcs-block) | `gca-gke-2025` | Multi-Domain | **NetworkPolicy DNS & GCS Block**: Egress policy drops DNS port 53 & GCP Metadata (`169.254.169.254`). |
+| [`complex-03-gar-auth-sa-token-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-03-gar-auth-sa-token-lockout) | `gca-gke-test` | Multi-Domain | **Artifact Registry Auth & SA Token Lockout**: Artifact Registry pull fail, disabled SA token automount, missing RBAC. |
+| [`complex-04-pod-affinity-cni-ip-starvation`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-04-pod-affinity-cni-ip-starvation) | `gca-gke-test` | Multi-Domain | **Scheduling Deadlock & CNI Starvation**: Strict `podAntiAffinity` + 35 pods exhausting CNI IP allocation + ILB failure. |
+| [`complex-05-pd-rwo-multiattach-sysctl`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-05-pd-rwo-multiattach-sysctl) | `gca-gke-test` | Multi-Domain | **PD RWO Storage Lockout & Sysctl Violation**: PersistentDisk ReadWriteOnce multi-attach deadlock + unprivileged `sysctl`. |
+| [`complex-06-spot-gpu-stockout-fallback`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-06-spot-gpu-stockout-fallback) | `gca-gke-2025` | Compute | **Spot GPU Stockout & ComputeClass Fallback**: `a100-gpu-class` ComputeClass scale-up fails with `ZONE_RESOURCE_POOL_EXHAUSTED`. |
+| [`complex-07-cpu-stockout-compute-class`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/complex-07-cpu-stockout-compute-class) | `gca-gke-test` | Compute | **High-Core vCPU Spot Stockout & ComputeClass**: Workload requests `cpu-hpc-compute-class` (56 vCPUs on `c2-standard-60` Spot). GKE Cluster Autoscaler scale-up fails with `ZONE_RESOURCE_POOL_EXHAUSTED` in `us-central1-a`. |
 
 ---
 

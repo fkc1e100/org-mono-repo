@@ -24,6 +24,7 @@ declare -A CLUSTER_DIRS=(
   ["complex-04"]="gca-gke-test:us-central1-a:complex-04-pod-affinity-cni-ip-starvation"
   ["complex-05"]="gca-gke-test:us-central1-a:complex-05-pd-rwo-multiattach-sysctl"
   ["complex-06"]="gca-gke-2025:us-central1-a:complex-06-spot-gpu-stockout-fallback"
+  ["complex-07"]="gca-gke-test:us-central1-a:complex-07-cpu-stockout-compute-class"
 )
 
 for c in "${!CLUSTER_DIRS[@]}"; do
@@ -84,6 +85,9 @@ for c in "${!CLUSTER_DIRS[@]}"; do
       ;;
     complex-06)
       kubectl apply -f "${REPO_ROOT}/manifests/workloads/complex-06-gpu-stockout-autoscaling.yaml" || true
+      ;;
+    complex-07)
+      kubectl apply -f "${REPO_ROOT}/manifests/workloads/complex-07-cpu-stockout-compute-class.yaml" || true
       ;;
   esac
 done
