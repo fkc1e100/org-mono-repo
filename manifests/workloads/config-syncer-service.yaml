@@ -9,7 +9,6 @@ metadata:
   name: restricted-sa
   namespace: prod-apps
   labels:
-    test.kube-agents.io/workload: complex-03
 ---
 # Intentionally missing Role, ClusterRole, and GCP IAM bindings for restricted-sa
 ---
@@ -19,7 +18,6 @@ metadata:
   name: config-syncer
   namespace: prod-apps
   labels:
-    test.kube-agents.io/workload: complex-03
 spec:
   replicas: 2
   selector:

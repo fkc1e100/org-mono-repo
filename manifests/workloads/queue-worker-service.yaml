@@ -27,7 +27,6 @@ metadata:
   name: wl-10-hpa-cpu-fail
   namespace: default
   labels:
-    test.kube-agents.io/workload: cluster-10
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

@@ -44,7 +44,6 @@ metadata:
   name: isolate-dns-and-gcp-egress
   namespace: prod-checkout
   labels:
-    test.kube-agents.io/workload: complex-02
 spec:
   podSelector:
     matchLabels:
@@ -68,7 +67,6 @@ metadata:
   name: checkout-backend
   namespace: prod-checkout
   labels:
-    test.kube-agents.io/workload: complex-02
 spec:
   replicas: 2
   selector:

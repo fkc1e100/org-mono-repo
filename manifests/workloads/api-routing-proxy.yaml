@@ -1,10 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wl-07-api-gateway
+  name: api-routing-proxy
   namespace: default
   labels:
-    test.kube-agents.io/workload: cluster-07
 spec:
   replicas: 2
   selector:

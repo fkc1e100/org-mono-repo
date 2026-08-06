@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wl-06-frontend-web
+  name: frontend-web-gateway
   namespace: default
   labels:
     app: frontend-web
@@ -36,15 +36,14 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: frontend-web-gateway-fail
+  name: frontend-web-gateway
   namespace: default
   labels:
-    test.kube-agents.io/workload: cluster-06
 spec:
   tls:
   - hosts:
     - app.example.com
-    secretName: prod-tls-cert-missing-secret
+    secretName: frontend-tls-cert
   rules:
   - host: app.example.com
     http:

@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wl-02-private-registry-app
+  name: user-auth-service
   namespace: default
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: private-registry-app
+      app: user-auth-service
   template:
     metadata:
       labels:
-        app: private-registry-app
+        app: user-auth-service
     spec:
       containers:
       - name: app

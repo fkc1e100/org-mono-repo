@@ -1,10 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wl-04-backend-api
+  name: checkout-backend-api
   namespace: default
   labels:
-    test.kube-agents.io/workload: cluster-04
 spec:
   replicas: 2
   selector:
@@ -22,5 +21,5 @@ spec:
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: missing-db-credentials
+              name: db-credentials
               key: DATABASE_PASSWORD

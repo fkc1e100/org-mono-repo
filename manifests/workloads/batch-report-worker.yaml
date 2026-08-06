@@ -1,10 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wl-08-spot-batch-processor
+  name: batch-report-worker-processor
   namespace: default
   labels:
-    test.kube-agents.io/workload: wl-08
 spec:
   replicas: 5
   selector:

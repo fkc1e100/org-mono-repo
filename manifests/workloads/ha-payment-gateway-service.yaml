@@ -4,7 +4,6 @@ metadata:
   name: cni-ip-hog
   namespace: default
   labels:
-    test.kube-agents.io/workload: complex-04
 spec:
   replicas: 35
   selector:
@@ -29,7 +28,6 @@ metadata:
   name: ha-payment-gateway
   namespace: default
   labels:
-    test.kube-agents.io/workload: complex-04
 spec:
   replicas: 4
   selector:
@@ -69,7 +67,6 @@ metadata:
   annotations:
     cloud.google.com/load-balancer-type: "Internal"
   labels:
-    test.kube-agents.io/workload: complex-04
 spec:
   type: LoadBalancer
   ports:

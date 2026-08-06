@@ -58,7 +58,6 @@ kind: MutatingWebhookConfiguration
 metadata:
   name: fleet-policy-enforcer
   labels:
-    test.kube-agents.io/workload: complex-01
 webhooks:
 - name: fleet-policy-enforcer.kube-agents.io
   rules:
@@ -83,7 +82,6 @@ metadata:
   name: payment-api
   namespace: default
   labels:
-    test.kube-agents.io/workload: complex-01
 spec:
   replicas: 3
   selector:

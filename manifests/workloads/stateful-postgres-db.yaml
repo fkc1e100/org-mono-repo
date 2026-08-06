@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-unbound-claim
+  name: postgres-data-pvc
   namespace: default
 spec:
   accessModes:
@@ -14,10 +14,9 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wl-05-stateful-db
+  name: stateful-postgres-db
   namespace: default
   labels:
-    test.kube-agents.io/workload: cluster-05
 spec:
   replicas: 1
   selector:
@@ -40,4 +39,4 @@ spec:
       volumes:
       - name: data-volume
         persistentVolumeClaim:
-          claimName: pvc-unbound-claim
+          claimName: postgres-data-pvc
