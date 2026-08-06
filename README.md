@@ -5,7 +5,7 @@ Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo engineered
 This repository contains multi-cluster GKE fleet infrastructure modules, Compute Engine (GCE) VM declarations, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, and GitHub Actions CI/CD workflows.
 
 > [!NOTE]
-> **GCP Project Portability for Forks**: If you fork this repository, set `export GCP_PROJECT_ID="your-gcp-project-id"` (or `export GCP_PROJECT_2025="..."` and `export GCP_PROJECT_TEST="..."`). All scripts and Terraform modules dynamically adapt to your active GCP project context.
+> **Zero-Prerequisite Onboarding**: All scripts (`deploy_gce_vms_terraform.sh`, `enforce_broken_state.sh`, `setup_argocd_gitops.sh`) include an automated **GCP Auth Check & Project Wizard**. If not logged in, they automatically run `gcloud auth login` and `gcloud auth application-default login`, then prompt interactively for single or dual project IDs.
 
 ---
 
@@ -49,7 +49,7 @@ GKE Fleet Microservices                  Backend GCE VM Infrastructure
 
 ### Option 1: Automated Terraform IaC Deployment (Recommended)
 
-To provision or reset all GCE VM instances and cluster resources via Terraform:
+To provision or reset all GCE VM instances and cluster resources via Terraform (includes automated `gcloud auth` login and project wizard):
 
 ```bash
 # Provision / Reset all GCE VM instances via automated Terraform IaC
@@ -61,9 +61,9 @@ To provision or reset all GCE VM instances and cluster resources via Terraform:
 
 ---
 
-### Option 2: Automated ArgoCD GitOps Deployment
+### Option 2: Automated ArgoCD GitOps Continuous Sync
 
-For GitOps-driven environments, run the 1-command ArgoCD setup script. It automatically validates if ArgoCD is installed (installing it if missing), detects your active GitHub repo/fork URL, binds `gce/argocd-app.yaml` to your fork, and applies the GitOps Application:
+For GitOps-driven environments, run the 1-command ArgoCD setup script:
 
 ```bash
 # Automated ArgoCD installation, fork binding & GitOps Application sync
