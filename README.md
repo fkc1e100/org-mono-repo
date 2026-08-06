@@ -1,6 +1,6 @@
 # Organization Fleet Infrastructure & Workload Monorepo (`org-mono-repo`)
 
-Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing multi-cluster GKE fleet infrastructure modules, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, GitHub Actions CI/CD workflows, and an autonomous SRE evaluation benchmark framework.
+Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing multi-cluster GKE fleet infrastructure modules, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, GitHub Actions CI/CD workflows, and a zero-shortcut autonomous SRE evaluation benchmark framework.
 
 ---
 
@@ -9,7 +9,8 @@ Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing
 ```text
 org-mono-repo/
 ├── benchmark/                                 # Autonomous SRE Benchmark Evaluation Key
-│   └── ground_truth.json                      # Hidden scenario ground truth & evaluation answer key
+│   ├── ground_truth.json                      # Hidden scenario ground truth & evaluation answer key (gitignored)
+│   └── README.md                              # Benchmark isolation rules & evaluation instructions
 ├── .github/                                    # Enterprise CI/CD & Automated Review Bots
 │   ├── dependabot.yml                         # Dependabot automated dependency review bot
 │   ├── workflows/
@@ -82,9 +83,6 @@ org-mono-repo/
 ├── rbac/                                      # Fleet ClusterRoles & ClusterRoleBindings
 ├── docs/                                      # Enterprise Documentation & ADRs
 │   └── adr/
-│       ├── ADR-001-monorepo-layout.md
-│       ├── ADR-002-config-connector-adoption.md
-│       └── ADR-003-custom-compute-classes-for-gpu-stockout.md
 ├── scripts/
 │   ├── deploy_fleet_event_watchers.sh        # Deploys kube-agents watcher daemon across fleet
 │   └── enforce_broken_state.sh              # Resets fleet workloads to evaluation states
@@ -93,10 +91,18 @@ org-mono-repo/
 
 ---
 
-## ⚡ Fleet Cluster Portfolio (17 Clusters)
+## 🎯 Benchmark Integrity & Anti-Shortcutting Standards
 
-> [!NOTE]
-> All cluster names and workload manifests use realistic production business domain identifiers (`prod-checkout`, `payment-processor`, `user-auth-service`). Scenario ground-truth diagnostic answers for AI SRE benchmarking are stored separately in [`benchmark/ground_truth.json`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/benchmark/ground_truth.json).
+To ensure a fair and un-cheatable evaluation environment for LLM SRE troubleshooting agents:
+
+1. **Zero Explanatory Comments**: Manifests contain no inline comments revealing failure causes.
+2. **Realistic String Names**: All StorageClasses (`premium-nvme-ssd`), Secrets (`db-credentials`), and Buckets (`gs://analytics-raw-data-2025`) use production-style names free of spoiler keywords (`nonexistent`, `fake`, `missing`, `fail`).
+3. **Realistic Workload Identifiers**: Services use enterprise microservice names (`payment-processor`, `checkout-backend-api`, `user-auth-service`) instead of scenario numbers.
+4. **Isolated Ground Truth**: Scenario ground-truth diagnostic answers are stored separately in `benchmark/ground_truth.json` (gitignored).
+
+---
+
+## ⚡ Fleet Cluster Portfolio (17 Clusters)
 
 | Cluster Folder Name | GCP Project | Target Workload Manifest | Target Namespace | Scenario ID |
 |---|---|---|---|---|
