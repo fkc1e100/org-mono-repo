@@ -1,5 +1,5 @@
 {
-  "version": "1.1",
+  "version": "1.2",
   "description": "Ground Truth Answer Key for Kube-Agents Autonomous SRE Triage Benchmark",
   "scenarios": {
     "prod-core-api-01": {
@@ -228,6 +228,16 @@
       "target_namespace": "prod-gateway",
       "symptoms": ["SSH Timeout", "Ingress Dropped", "Egress Blackhole"],
       "root_cause": "ComputeFirewall rule denies TCP 22/443 ingress while custom static route 0.0.0.0/0 points to deleted Next Hop Gateway."
+    },
+    "prod-finops-exporter-vm": {
+      "scenario_id": "gce-complex-03",
+      "instance_name": "prod-finops-exporter-vm",
+      "project_id": "gca-gke-2025",
+      "zone": "us-central1-a",
+      "primary_domain": "GCE Telemetry & IAM",
+      "target_namespace": "prod-analytics",
+      "symptoms": ["Ops Agent Daemon Crash", "Log Drop", "Permission Denied"],
+      "root_cause": "Google Cloud Ops Agent service fails continuously due to service account lacking roles/logging.logWriter IAM permissions."
     }
   }
 }

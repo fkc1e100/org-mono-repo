@@ -83,7 +83,8 @@ org-mono-repo/
 │   ├── gce-vm-01-startup-script-failure/      # Legacy Auth VM startup script package failure
 │   ├── gce-vm-02-disk-full-journal-lock/      # Audit logger VM boot disk capacity & journald lock
 │   ├── complex-gce-01-mig-healthcheck-iam-lockout/ # Managed Instance Group autohealing & IAM lockout
-│   └── complex-gce-02-vpc-firewall-routes-blackhole/ # Edge bastion VPC firewall deny & blackhole route
+│   ├── complex-gce-02-vpc-firewall-routes-blackhole/ # Edge bastion VPC firewall deny & blackhole route
+│   └── complex-gce-03-ops-agent-log-sink-lockout/ # Telemetry exporter Ops Agent IAM logging lockout
 ├── gcp-infrastructure/                        # Config Connector (KCC) GCP Resources as Code
 │   ├── database/                              # CloudSQL SQLInstance & SQLDatabase KCC CRDs
 │   ├── iam/                                   # Workload Identity IAMServiceAccount & IAMPolicyBinding
@@ -155,14 +156,15 @@ org-mono-repo/
 
 ---
 
-## 🖥️ Compute Engine (GCE) VM Portfolio (4 Environments)
+## 🖥️ Compute Engine (GCE) VM Portfolio (5 Environments)
 
 | GCE Scenario Folder | Target Resource | GCP Project | Target Namespace | Complexity Level | Primary Failure Domain |
 |---|---|---|---|---|---|
-| [`gce-vm-01-startup-script-failure`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/gce-vm-01-startup-script-failure) | `prod-legacy-auth-vm` | `${GCP_PROJECT_ID}` | `prod-auth` | 🟢 Simple | Startup Script & Package Dependency Egress |
-| [`gce-vm-02-disk-full-journal-lock`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/gce-vm-02-disk-full-journal-lock) | `prod-audit-logger-vm` | `${GCP_PROJECT_ID}` | `prod-analytics` | 🟢 Simple | Boot Disk Capacity & Systemd Journal Lock |
-| [`complex-gce-01-mig-healthcheck-iam-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-01-mig-healthcheck-iam-lockout) | `prod-mig-payment-gateway` | `${GCP_PROJECT_ID}` | `prod-payments` | 🔴 Complex | MIG Autohealing Loop & IAM Secret Manager Lockout |
-| [`complex-gce-02-vpc-firewall-routes-blackhole`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-02-vpc-firewall-routes-blackhole) | `prod-edge-bastion-vm` | `${GCP_PROJECT_ID}` | `prod-gateway` | 🔴 Complex | VPC Firewall Deny & Static Route Blackhole |
+| [`gce-vm-01-startup-script-failure`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/gce-vm-01-startup-script-failure) | `prod-legacy-auth-vm` | `${GCP_PROJECT_ID}` | `prod-auth` | 🟢 Simple | Startup Script & Package Egress |
+| [`gce-vm-02-disk-full-journal-lock`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/gce-vm-02-disk-full-journal-lock) | `prod-audit-logger-vm` | `${GCP_PROJECT_ID}` | `prod-analytics` | 🟢 Simple | Boot Disk Capacity & Journal Lock |
+| [`complex-gce-01-mig-healthcheck-iam-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-01-mig-healthcheck-iam-lockout) | `prod-mig-payment-gateway` | `${GCP_PROJECT_ID}` | `prod-payments` | 🔴 Complex | MIG Autohealing & IAM Secret Lockout |
+| [`complex-gce-02-vpc-firewall-routes-blackhole`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-02-vpc-firewall-routes-blackhole) | `prod-edge-bastion-vm` | `${GCP_PROJECT_ID}` | `prod-gateway` | 🔴 Complex | VPC Firewall Deny & Blackhole Route |
+| [`complex-gce-03-ops-agent-log-sink-lockout`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/gce/complex-gce-03-ops-agent-log-sink-lockout) | `prod-finops-exporter-vm` | `${GCP_PROJECT_ID}` | `prod-analytics` | 🔴 Complex | Ops Agent Telemetry & IAM Log Writer Lockout |
 
 ---
 
