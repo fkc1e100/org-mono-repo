@@ -1,6 +1,6 @@
 # Organization Fleet Infrastructure & Workload Monorepo (`org-mono-repo`)
 
-Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing multi-cluster GKE fleet infrastructure modules, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, and GitHub Actions CI/CD workflows.
+Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing multi-cluster GKE fleet infrastructure modules, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, and GitHub Actions CI/CD workflows with automated review bots.
 
 ---
 
@@ -8,10 +8,14 @@ Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing
 
 ```text
 org-mono-repo/
-├── .github/                                    # Enterprise CI/CD & Governance
+├── .github/                                    # Enterprise CI/CD & Automated Review Bots
+│   ├── dependabot.yml                         # Dependabot automated dependency review bot
 │   ├── workflows/
 │   │   ├── terraform-ci.yaml                  # Terraform format, tflint, and validation checks
-│   │   └── policy-scan.yaml                   # Conftest policy-as-code validation on PRs
+│   │   ├── policy-scan.yaml                   # Conftest policy-as-code validation on PRs
+│   │   ├── trivy-security-bot.yaml            # Trivy automated security review bot
+│   │   ├── pr-title-linter.yaml               # Semantic PR title linter bot
+│   │   └── stale-bot.yaml                     # Automated stale PR and issue triage bot
 │   └── CODEOWNERS                             # Granular PR approval enforcement
 ├── .pre-commit-config.yaml                    # Local workstation git pre-commit hooks
 ├── terraform/                                 # Standardized Reusable IaC Core
