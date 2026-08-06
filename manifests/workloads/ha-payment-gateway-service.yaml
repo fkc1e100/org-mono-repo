@@ -1,8 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: prod-payments
+  labels:
+    cost-center: "finops-payments-101"
+    owner: "payments-team"
+    pod-security.kubernetes.io/enforce: "baseline"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cni-ip-hog
-  namespace: default
+  namespace: prod-payments
   labels:
 spec:
   replicas: 35
@@ -26,7 +35,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ha-payment-gateway
-  namespace: default
+  namespace: prod-payments
   labels:
 spec:
   replicas: 4
@@ -63,7 +72,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: payment-ilb-service
-  namespace: default
+  namespace: prod-payments
   annotations:
     cloud.google.com/load-balancer-type: "Internal"
   labels:

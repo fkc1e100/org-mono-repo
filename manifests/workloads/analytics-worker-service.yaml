@@ -1,8 +1,17 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: prod-analytics
+  labels:
+    cost-center: "finops-analytics-707"
+    owner: "data-team"
+    pod-security.kubernetes.io/enforce: "baseline"
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pvc-analytics-store
-  namespace: default
+  namespace: prod-analytics
 spec:
   accessModes:
   - ReadWriteOnce
@@ -15,7 +24,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: analytics-worker
-  namespace: default
+  namespace: prod-analytics
   labels:
 spec:
   replicas: 2
