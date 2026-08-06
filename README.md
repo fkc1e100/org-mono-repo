@@ -1,6 +1,6 @@
 # Organization Fleet Infrastructure & Workload Monorepo (`org-mono-repo`)
 
-Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing multi-cluster GKE fleet infrastructure modules, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, GitHub Actions CI/CD workflows, and a zero-shortcut autonomous SRE evaluation benchmark framework.
+Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing multi-cluster GKE fleet infrastructure modules, Config Connector (KCC) GCP infrastructure declarations, OPA Gatekeeper policy-as-code guardrails, reusable Terraform modules, tenant workspace vending definitions, and GitHub Actions CI/CD workflows.
 
 ---
 
@@ -8,9 +8,6 @@ Welcome to **`fkc1e100/org-mono-repo`**, an enterprise-grade monorepo containing
 
 ```text
 org-mono-repo/
-├── benchmark/                                 # Autonomous SRE Benchmark Evaluation Key
-│   ├── ground_truth.json                      # Hidden scenario ground truth & evaluation answer key (gitignored)
-│   └── README.md                              # Benchmark isolation rules & evaluation instructions
 ├── .github/                                    # Enterprise CI/CD & Automated Review Bots
 │   ├── dependabot.yml                         # Dependabot automated dependency review bot
 │   ├── workflows/
@@ -91,38 +88,27 @@ org-mono-repo/
 
 ---
 
-## 🎯 Benchmark Integrity & Anti-Shortcutting Standards
-
-To ensure a fair and un-cheatable evaluation environment for LLM SRE troubleshooting agents:
-
-1. **Zero Explanatory Comments**: Manifests contain no inline comments revealing failure causes.
-2. **Realistic String Names**: All StorageClasses (`premium-nvme-ssd`), Secrets (`db-credentials`), and Buckets (`gs://analytics-raw-data-2025`) use production-style names free of spoiler keywords (`nonexistent`, `fake`, `missing`, `fail`).
-3. **Realistic Workload Identifiers**: Services use enterprise microservice names (`payment-processor`, `checkout-backend-api`, `user-auth-service`) instead of scenario numbers.
-4. **Isolated Ground Truth**: Scenario ground-truth diagnostic answers are stored separately in `benchmark/ground_truth.json` (gitignored).
-
----
-
 ## ⚡ Fleet Cluster Portfolio (17 Clusters)
 
-| Cluster Folder Name | GCP Project | Target Workload Manifest | Target Namespace | Scenario ID |
-|---|---|---|---|---|
-| [`prod-core-api-01`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-core-api-01) | `gca-gke-2025` | `payment-processor.yaml` | `default` | `scenario-01` |
-| [`prod-user-auth-02`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-user-auth-02) | `gca-gke-2025` | `user-auth-service.yaml` | `default` | `scenario-02` |
-| [`prod-data-pipeline-03`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-data-pipeline-03) | `gca-gke-2025` | `memory-cache-service.yaml` | `default` | `scenario-03` |
-| [`prod-checkout-04`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-checkout-04) | `gca-gke-2025` | `checkout-backend-api.yaml` | `default` | `scenario-04` |
-| [`prod-storage-db-05`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-storage-db-05) | `gca-gke-2025` | `stateful-postgres-db.yaml` | `default` | `scenario-05` |
-| [`edge-ingress-gateway-06`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/edge-ingress-gateway-06) | `gca-gke-test` | `frontend-web-gateway.yaml` | `default` | `scenario-06` |
-| [`prod-api-router-07`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-api-router-07) | `gca-gke-test` | `api-routing-proxy.yaml` | `default` | `scenario-07` |
-| [`batch-analytics-08`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/batch-analytics-08) | `gca-gke-2025` | `batch-report-worker.yaml` | `default` | `scenario-08` |
-| [`ai-training-dws-09`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/ai-training-dws-09) | `gca-gke-2025` | `gemma-fine-tuning-job.yaml` | `default` | `scenario-09` |
-| [`prod-auto-scaler-10`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-auto-scaler-10) | `gca-gke-test` | `queue-worker-service.yaml` | `default` | `scenario-10` |
-| [`prod-checkout-gateway-11`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-checkout-gateway-11) | `gca-gke-2025` | `payment-api-gateway.yaml` | `default` | `complex-01` |
-| [`prod-order-processing-12`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-order-processing-12) | `gca-gke-2025` | `checkout-backend-service.yaml` | `prod-checkout` | `complex-02` |
-| [`prod-catalog-sync-13`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-catalog-sync-13) | `gca-gke-test` | `config-syncer-service.yaml` | `prod-apps` | `complex-03` |
-| [`prod-ha-payments-14`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-ha-payments-14) | `gca-gke-test` | `ha-payment-gateway-service.yaml` | `default` | `complex-04` |
-| [`prod-analytics-store-15`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-analytics-store-15) | `gca-gke-test` | `analytics-worker-service.yaml` | `default` | `complex-05` |
-| [`ai-inference-gpu-16`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/ai-inference-gpu-16) | `gca-gke-2025` | `llm-batch-inference-job.yaml` | `default` | `complex-06` |
-| [`hpc-batch-compute-17`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/hpc-batch-compute-17) | `gca-gke-test` | `hpc-batch-analytics-job.yaml` | `default` | `complex-07` |
+| Cluster Folder Name | GCP Project | Target Workload Manifest | Target Namespace |
+|---|---|---|---|
+| [`prod-core-api-01`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-core-api-01) | `gca-gke-2025` | `payment-processor.yaml` | `default` |
+| [`prod-user-auth-02`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-user-auth-02) | `gca-gke-2025` | `user-auth-service.yaml` | `default` |
+| [`prod-data-pipeline-03`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-data-pipeline-03) | `gca-gke-2025` | `memory-cache-service.yaml` | `default` |
+| [`prod-checkout-04`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-checkout-04) | `gca-gke-2025` | `checkout-backend-api.yaml` | `default` |
+| [`prod-storage-db-05`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-storage-db-05) | `gca-gke-2025` | `stateful-postgres-db.yaml` | `default` |
+| [`edge-ingress-gateway-06`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/edge-ingress-gateway-06) | `gca-gke-test` | `frontend-web-gateway.yaml` | `default` |
+| [`prod-api-router-07`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-api-router-07) | `gca-gke-test` | `api-routing-proxy.yaml` | `default` |
+| [`batch-analytics-08`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/batch-analytics-08) | `gca-gke-2025` | `batch-report-worker.yaml` | `default` |
+| [`ai-training-dws-09`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/ai-training-dws-09) | `gca-gke-2025` | `gemma-fine-tuning-job.yaml` | `default` |
+| [`prod-auto-scaler-10`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-auto-scaler-10) | `gca-gke-test` | `queue-worker-service.yaml` | `default` |
+| [`prod-checkout-gateway-11`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-checkout-gateway-11) | `gca-gke-2025` | `payment-api-gateway.yaml` | `default` |
+| [`prod-order-processing-12`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-order-processing-12) | `gca-gke-2025` | `checkout-backend-service.yaml` | `prod-checkout` |
+| [`prod-catalog-sync-13`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-catalog-sync-13) | `gca-gke-test` | `config-syncer-service.yaml` | `prod-apps` |
+| [`prod-ha-payments-14`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-ha-payments-14) | `gca-gke-test` | `ha-payment-gateway-service.yaml` | `default` |
+| [`prod-analytics-store-15`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/prod-analytics-store-15) | `gca-gke-test` | `analytics-worker-service.yaml` | `default` |
+| [`ai-inference-gpu-16`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/ai-inference-gpu-16) | `gca-gke-2025` | `llm-batch-inference-job.yaml` | `default` |
+| [`hpc-batch-compute-17`](file:///usr/local/google/home/fcurrie/Projects/org-mono-repo/clusters/hpc-batch-compute-17) | `gca-gke-test` | `hpc-batch-analytics-job.yaml` | `default` |
 
 ---
 
