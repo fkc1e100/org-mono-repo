@@ -52,11 +52,11 @@ resource "google_container_node_pool" "primary_nodes" {
 }
 
 resource "google_container_node_pool" "spot_gpu_pool" {
-  count      = var.enable_spot_gpu_pool ? 1 : 0
-  name       = "${var.cluster_name}-gpu-spot-pool"
-  location   = var.zone
-  cluster    = google_container_cluster.primary.name
-  project    = var.project_id
+  count    = var.enable_spot_gpu_pool ? 1 : 0
+  name     = "${var.cluster_name}-gpu-spot-pool"
+  location = var.zone
+  cluster  = google_container_cluster.primary.name
+  project  = var.project_id
 
   autoscaling {
     min_node_count = 0

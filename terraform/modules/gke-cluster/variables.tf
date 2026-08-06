@@ -53,7 +53,7 @@ variable "release_channel" {
 variable "node_labels" {
   type        = map(string)
   description = "Labels to apply to node pool"
-  default     = {
+  default = {
     environment = "production"
     managed-by  = "terraform"
   }
