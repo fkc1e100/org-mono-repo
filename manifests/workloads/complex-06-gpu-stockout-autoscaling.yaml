@@ -1,3 +1,19 @@
+apiVersion: cloud.google.com/v1
+kind: ComputeClass
+metadata:
+  name: a100-gpu-class
+spec:
+  priorities:
+  - machineType: "a2-ultragpu-1g"
+    gpu:
+      type: "nvidia-a100-80gb"
+      count: 1
+    spot: true
+  - machineType: "g2-standard-12"
+    gpu:
+      type: "nvidia-l4"
+      count: 1
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,7 +21,7 @@ metadata:
   namespace: default
   labels:
     test.kube-agents.io/workload: complex-06
-    test.kube-agents.io/failure-type: GPUStockoutAutoscalingFailure
+    test.kube-agents.io/failure-type: ComputeClassGPUStockoutAutoscaling
 spec:
   replicas: 8
   selector:
@@ -17,10 +33,7 @@ spec:
         app: llm-batch-inference
     spec:
       nodeSelector:
-        cloud.google.com/gke-spot: "true"
-        cloud.google.com/gke-accelerator: "nvidia-tesla-a100"
-        node.kubernetes.io/instance-type: "a2-ultragpu-1g"
-        topology.kubernetes.io/zone: "us-central1-a"
+        cloud.google.com/compute-class: "a100-gpu-class"
       tolerations:
       - key: "nvidia.com/gpu"
         operator: "Exists"
@@ -32,13 +45,13 @@ spec:
       containers:
       - name: llm-worker
         image: gcr.io/kaggle-gpu-images/python:latest
-        command: ["python3", "-c", "import time; print('Starting LLM Inference Worker...'); time.sleep(3600)"]
+        command: ["python3", "-c", "import time; print('Starting LLM Inference Worker via ComputeClass...'); time.sleep(3600)"]
         resources:
           requests:
-            cpu: "12"
-            memory: "85Gi"
+            cpu: "8"
+            memory: "32Gi"
             nvidia.com/gpu: "1"
           limits:
-            cpu: "12"
-            memory: "85Gi"
+            cpu: "8"
+            memory: "32Gi"
             nvidia.com/gpu: "1"
