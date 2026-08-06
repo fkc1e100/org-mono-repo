@@ -17,6 +17,9 @@ org-mono-repo/
 ├── terraform/                                 # Standardized Reusable IaC Core
 │   └── modules/
 │       └── gke-cluster/                       # Modular GKE cluster, Workload Identity & nodepool IaC
+│           ├── main.tf
+│           ├── variables.tf
+│           └── outputs.tf
 ├── gcp-infrastructure/                        # Config Connector (KCC) GCP Resources as Code
 │   ├── database/                              # CloudSQL SQLInstance & SQLDatabase KCC CRDs
 │   ├── iam/                                   # Workload Identity IAMServiceAccount & IAMPolicyBinding
@@ -49,15 +52,22 @@ org-mono-repo/
 │   ├── complex-05-pd-rwo-multiattach-sysctl/
 │   ├── complex-06-spot-gpu-stockout-fallback/
 │   └── complex-07-cpu-stockout-compute-class/
-├── manifests/                                 # Workload Manifests & Failure Scenarios
+├── manifests/                                 # Kubernetes Manifests & Workload Definitions
+│   ├── common/                                # Base fleet event watchers & loadbalancer services
+│   ├── labels/                                # Fleet namespace labeling standards
+│   └── workloads/                             # Canonical and complex failure workload manifests
+├── rbac/                                      # Fleet ClusterRoles & ClusterRoleBindings
+│   ├── role.yaml
+│   └── rolebinding.yaml
 ├── docs/                                      # Enterprise Documentation & ADRs
 │   └── adr/
 │       ├── ADR-001-monorepo-layout.md
 │       ├── ADR-002-config-connector-adoption.md
 │       └── ADR-003-custom-compute-classes-for-gpu-stockout.md
-└── scripts/
-    ├── deploy_fleet_event_watchers.sh
-    └── enforce_broken_state.sh
+├── scripts/
+│   ├── deploy_fleet_event_watchers.sh        # Deploys kube-agents watcher daemon across fleet
+│   └── enforce_broken_state.sh              # Resets fleet workloads to failure states
+└── default-deny-netpol.yaml                   # Cluster-wide default deny egress/ingress NetPol
 ```
 
 ---
