@@ -6,7 +6,7 @@ echo " Deploying / Resetting GCE VM Environments via gcloud CLI"
 echo "============================================================"
 
 # Dynamic GCP Project resolution
-DEFAULT_PROJECT="$(gcloud config get-value project 2>/dev/null || echo "gca-gke-2025")"
+DEFAULT_PROJECT="$(gcloud config get-value project 2>/dev/null || echo "enterprise-platform-core")"
 PROJ_2025="${GCP_PROJECT_2025:-${GCP_PROJECT_ID:-$DEFAULT_PROJECT}}"
 PROJ_TEST="${GCP_PROJECT_TEST:-${GCP_PROJECT_ID:-$DEFAULT_PROJECT}}"
 ZONE="us-central1-a"

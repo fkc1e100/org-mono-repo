@@ -1,6 +1,6 @@
 # Fleet Cluster: ai-inference-gpu-16
 
-**Project**: `gca-gke-2025`  
+**Project**: `enterprise-platform-core`  
 **Zone**: `us-central1-a`  
 **Domain**: AI / LLM Batch Inference Infrastructure
 

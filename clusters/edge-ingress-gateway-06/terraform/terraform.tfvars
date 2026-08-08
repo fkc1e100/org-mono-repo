@@ -1,4 +1,4 @@
-project_id   = "gca-gke-test"
+project_id   = "enterprise-retail-fleet"
 cluster_name = "cluster-06"
 zone         = "us-central1-a"
 machine_type = "e2-standard-2"

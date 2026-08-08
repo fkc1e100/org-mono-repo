@@ -4,7 +4,7 @@ metadata:
   name: gke-fleet-analytics-data-2025
   namespace: config-connector
   annotations:
-    cnrm.cloud.google.com/project-id: "gca-gke-2025"
+    cnrm.cloud.google.com/project-id: "enterprise-platform-core"
 spec:
   location: US-CENTRAL1
   storageClass: STANDARD
@@ -21,7 +21,7 @@ metadata:
   name: analytics-bucket-admin-access
   namespace: config-connector
   annotations:
-    cnrm.cloud.google.com/project-id: "gca-gke-2025"
+    cnrm.cloud.google.com/project-id: "enterprise-platform-core"
 spec:
   bucketRef:
     name: gke-fleet-analytics-data-2025

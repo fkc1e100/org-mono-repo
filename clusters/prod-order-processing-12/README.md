@@ -1,6 +1,6 @@
 # Fleet Cluster: prod-order-processing-12
 
-**Project**: `gca-gke-2025`  
+**Project**: `enterprise-platform-core`  
 **Zone**: `us-central1-a`  
 **Domain**: Order Processing & Egress Security Infrastructure
 

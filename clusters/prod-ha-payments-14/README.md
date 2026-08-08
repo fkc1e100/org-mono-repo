@@ -1,6 +1,6 @@
 # Fleet Cluster: prod-ha-payments-14
 
-**Project**: `gca-gke-test`  
+**Project**: `enterprise-retail-fleet`  
 **Zone**: `us-central1-a`  
 **Domain**: High-Availability Payment Gateway Infrastructure
 

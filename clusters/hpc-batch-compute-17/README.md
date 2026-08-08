@@ -1,6 +1,6 @@
 # Fleet Cluster: hpc-batch-compute-17
 
-**Project**: `gca-gke-test`  
+**Project**: `enterprise-retail-fleet`  
 **Zone**: `us-central1-a`  
 **Domain**: HPC High-Core vCPU Compute Infrastructure
 

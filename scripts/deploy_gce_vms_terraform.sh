@@ -42,7 +42,7 @@ ensure_gcp_auth_and_project() {
       export GCP_PROJECT_ID="${INPUT_PROJ}"
     fi
   else
-    export GCP_PROJECT_ID="${DETECTED_PROJ:-gca-gke-2025}"
+    export GCP_PROJECT_ID="${DETECTED_PROJ:-enterprise-platform-core}"
   fi
 
   gcloud config set project "${GCP_PROJECT_ID}" >/dev/null 2>&1 || true

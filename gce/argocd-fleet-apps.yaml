@@ -6,11 +6,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/fkc1e100/gke-fleet-iac.git'
+    repoURL: "https://github.com/fkc1e100/gke-fleet-iac.git"
     targetRevision: HEAD
     path: manifests/workloads
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
     namespace: default
   syncPolicy:
     automated:
@@ -25,11 +25,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/fkc1e100/gke-fleet-iac.git'
+    repoURL: "https://github.com/fkc1e100/gke-fleet-iac.git"
     targetRevision: HEAD
     path: clusters
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
     namespace: default
   syncPolicy:
     automated:
@@ -44,11 +44,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/fkc1e100/gke-fleet-iac.git'
+    repoURL: "https://github.com/fkc1e100/gke-fleet-iac.git"
     targetRevision: HEAD
     path: rbac
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
     namespace: default
   syncPolicy:
     automated:

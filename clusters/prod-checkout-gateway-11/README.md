@@ -1,6 +1,6 @@
 # Fleet Cluster: prod-checkout-gateway-11
 
-**Project**: `gca-gke-2025`  
+**Project**: `enterprise-platform-core`  
 **Zone**: `us-central1-a`  
 **Domain**: Payment Gateway & Admission Control Infrastructure
 

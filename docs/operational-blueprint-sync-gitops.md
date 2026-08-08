@@ -35,6 +35,7 @@ You can run the automated script [`scripts/sync_repo_to_destination.sh`](file://
 ### Manual Execution Steps:
 
 #### 1.1 Close Stale PRs and Issues on Destination Repository
+
 ```bash
 export GITHUB_ORG="fkc1e100"
 export TARGET_REPO="gke-fleet-iac"
@@ -51,6 +52,7 @@ done
 ```
 
 #### 1.2 Mirror & Overwrite Repository Contents
+
 ```bash
 # Clone source (Read-Only) and target repositories
 git clone https://github.com/fkc1e100/org-mono-repo.git /tmp/src-repo
@@ -71,6 +73,7 @@ git push origin main --force
 ## 🐙 Step 2: Configure Argo CD GitOps Monitoring (No KCC)
 
 ### 2.1 Register Repository in Argo CD
+
 ```bash
 kubectl apply -f - << 'EOF'
 apiVersion: v1
@@ -89,6 +92,7 @@ EOF
 ```
 
 ### 2.2 Apply Argo CD Application Suite (`gce/argocd-fleet-apps.yaml`)
+
 Apply the Application Suite manifest to monitor microservices, cluster configurations, and RBAC policies:
 
 ```bash
@@ -100,8 +104,9 @@ kubectl apply -f gce/argocd-fleet-apps.yaml -n argocd
 ## 🏗️ Step 3: Setup Keyless GitHub Actions CI/CD for Terraform
 
 ### 3.1 Provision GCP Service Account & Workload Identity Federation
+
 ```bash
-export PROJECT_ID="gca-gke-2025"
+export PROJECT_ID="enterprise-platform-core"
 export SA_NAME="github-actions-tf-sa"
 export SA_EMAIL="${SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
 export GITHUB_ORG="fkc1e100"
@@ -128,9 +133,11 @@ gcloud iam service-accounts add-iam-policy-binding "${SA_EMAIL}" \
 ```
 
 ### 3.2 Verify Workflow File (`.github/workflows/terraform-apply.yaml`)
+
 The workflow is saved at `.github/workflows/terraform-apply.yaml` and supports `workflow_dispatch`, `pull_request`, and `push` triggers.
 
 ### 3.3 Trigger Automated Provisioning
+
 ```bash
 git add .github/workflows/terraform-apply.yaml
 git commit -m "ci(github): add workflow_dispatch trigger to Terraform CI/CD pipeline"
