@@ -8,11 +8,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/fkc1e100/org-mono-repo.git'
+    repoURL: "https://github.com/fkc1e100/org-mono-repo.git"
     targetRevision: HEAD
     path: gce
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
     namespace: default
   syncPolicy:
     automated:

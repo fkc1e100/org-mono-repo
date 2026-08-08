@@ -5,7 +5,7 @@
     "prod-core-api-01": {
       "scenario_id": "scenario-01",
       "cluster_name": "cluster-01",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "Workload",
       "target_namespace": "prod-payments",
@@ -16,7 +16,7 @@
     "prod-user-auth-02": {
       "scenario_id": "scenario-02",
       "cluster_name": "cluster-02",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "Workload",
       "target_namespace": "prod-auth",
@@ -27,7 +27,7 @@
     "prod-data-pipeline-03": {
       "scenario_id": "scenario-03",
       "cluster_name": "cluster-03",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "Workload",
       "target_namespace": "prod-caching",
@@ -38,7 +38,7 @@
     "prod-checkout-04": {
       "scenario_id": "scenario-04",
       "cluster_name": "cluster-04",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "Workload",
       "target_namespace": "prod-checkout",
@@ -49,7 +49,7 @@
     "prod-storage-db-05": {
       "scenario_id": "scenario-05",
       "cluster_name": "cluster-05",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "Storage",
       "target_namespace": "prod-databases",
@@ -60,7 +60,7 @@
     "edge-ingress-gateway-06": {
       "scenario_id": "scenario-06",
       "cluster_name": "cluster-06",
-      "project_id": "gca-gke-test",
+      "project_id": "enterprise-retail-fleet",
       "zone": "us-central1-a",
       "primary_domain": "Ingress",
       "target_namespace": "prod-ingress",
@@ -71,7 +71,7 @@
     "prod-api-router-07": {
       "scenario_id": "scenario-07",
       "cluster_name": "cluster-07",
-      "project_id": "gca-gke-test",
+      "project_id": "enterprise-retail-fleet",
       "zone": "us-central1-a",
       "primary_domain": "Workload",
       "target_namespace": "prod-gateway",
@@ -82,7 +82,7 @@
     "batch-analytics-08": {
       "scenario_id": "scenario-08",
       "cluster_name": "cluster-08",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "Compute",
       "target_namespace": "batch-processing",
@@ -93,7 +93,7 @@
     "ai-training-dws-09": {
       "scenario_id": "scenario-09",
       "cluster_name": "cluster-09",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "Compute",
       "target_namespace": "ai-training",
@@ -104,7 +104,7 @@
     "prod-auto-scaler-10": {
       "scenario_id": "scenario-10",
       "cluster_name": "cluster-10",
-      "project_id": "gca-gke-test",
+      "project_id": "enterprise-retail-fleet",
       "zone": "us-central1-a",
       "primary_domain": "Autoscaling",
       "target_namespace": "prod-workers",
@@ -115,7 +115,7 @@
     "prod-checkout-gateway-11": {
       "scenario_id": "complex-01",
       "cluster_name": "complex-01",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "Multi-Domain (Admission Control & Auth)",
       "target_namespace": "prod-payments",
@@ -126,7 +126,7 @@
     "prod-order-processing-12": {
       "scenario_id": "complex-02",
       "cluster_name": "complex-02",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "Multi-Domain (Networking & Cloud Storage)",
       "target_namespace": "prod-checkout",
@@ -137,7 +137,7 @@
     "prod-catalog-sync-13": {
       "scenario_id": "complex-03",
       "cluster_name": "complex-03",
-      "project_id": "gca-gke-test",
+      "project_id": "enterprise-retail-fleet",
       "zone": "us-central1-a",
       "primary_domain": "Multi-Domain (Image Auth & RBAC)",
       "target_namespace": "prod-catalog",
@@ -148,7 +148,7 @@
     "prod-ha-payments-14": {
       "scenario_id": "complex-04",
       "cluster_name": "complex-04",
-      "project_id": "gca-gke-test",
+      "project_id": "enterprise-retail-fleet",
       "zone": "us-central1-a",
       "primary_domain": "Multi-Domain (Scheduling, CNI & LoadBalancer)",
       "target_namespace": "prod-payments",
@@ -159,7 +159,7 @@
     "prod-analytics-store-15": {
       "scenario_id": "complex-05",
       "cluster_name": "complex-05",
-      "project_id": "gca-gke-test",
+      "project_id": "enterprise-retail-fleet",
       "zone": "us-central1-a",
       "primary_domain": "Multi-Domain (Storage, Security & Cloud Sync)",
       "target_namespace": "prod-analytics",
@@ -170,7 +170,7 @@
     "ai-inference-gpu-16": {
       "scenario_id": "complex-06",
       "cluster_name": "complex-06",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "Compute / Capacity",
       "target_namespace": "ai-inference",
@@ -181,7 +181,7 @@
     "hpc-batch-compute-17": {
       "scenario_id": "complex-07",
       "cluster_name": "complex-07",
-      "project_id": "gca-gke-test",
+      "project_id": "enterprise-retail-fleet",
       "zone": "us-central1-a",
       "primary_domain": "Compute / Capacity",
       "target_namespace": "hpc-batch",
@@ -193,7 +193,7 @@
       "scenario_id": "gce-01",
       "folder_name": "prod-auth-legacy-vm",
       "instance_name": "prod-legacy-auth-vm",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "GCE Compute",
       "target_namespace": "prod-auth",
@@ -204,7 +204,7 @@
       "scenario_id": "gce-02",
       "folder_name": "prod-audit-logger-vm",
       "instance_name": "prod-audit-logger-vm",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "GCE Storage / OS",
       "target_namespace": "prod-analytics",
@@ -215,7 +215,7 @@
       "scenario_id": "gce-complex-01",
       "folder_name": "prod-payment-mig-gateway",
       "mig_name": "prod-mig-payment-gateway",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1",
       "primary_domain": "GCE Hybrid (MIG, IAM & Autohealing)",
       "target_namespace": "prod-payments",
@@ -226,7 +226,7 @@
       "scenario_id": "gce-complex-02",
       "folder_name": "prod-edge-bastion-gateway",
       "instance_name": "prod-edge-bastion-vm",
-      "project_id": "gca-gke-test",
+      "project_id": "enterprise-retail-fleet",
       "zone": "us-central1-a",
       "primary_domain": "GCE Networking (VPC Firewall & Routing)",
       "target_namespace": "prod-gateway",
@@ -237,7 +237,7 @@
       "scenario_id": "gce-complex-03",
       "folder_name": "prod-finops-telemetry-exporter",
       "instance_name": "prod-finops-exporter-vm",
-      "project_id": "gca-gke-2025",
+      "project_id": "enterprise-platform-core",
       "zone": "us-central1-a",
       "primary_domain": "GCE Telemetry & IAM",
       "target_namespace": "prod-analytics",

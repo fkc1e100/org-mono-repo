@@ -1,6 +1,6 @@
 # Fleet Cluster: prod-analytics-store-15
 
-**Project**: `gca-gke-test`  
+**Project**: `enterprise-retail-fleet`  
 **Zone**: `us-central1-a`  
 **Domain**: Analytics Pipeline & Storage Infrastructure
 

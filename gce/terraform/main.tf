@@ -11,7 +11,7 @@ terraform {
 variable "project_id" {
   type        = string
   description = "GCP Project ID"
-  default     = "gca-gke-2025"
+  default     = "enterprise-platform-core"
 }
 
 variable "zone" {

@@ -4,7 +4,7 @@ metadata:
   name: fleet-vpc-network
   namespace: config-connector
   annotations:
-    cnrm.cloud.google.com/project-id: "gca-gke-2025"
+    cnrm.cloud.google.com/project-id: "enterprise-platform-core"
 spec:
   autoCreateSubnetworks: false
   routingMode: GLOBAL
@@ -15,7 +15,7 @@ metadata:
   name: fleet-gke-us-central1-subnet
   namespace: config-connector
   annotations:
-    cnrm.cloud.google.com/project-id: "gca-gke-2025"
+    cnrm.cloud.google.com/project-id: "enterprise-platform-core"
 spec:
   region: us-central1
   networkRef:

@@ -1,6 +1,6 @@
 # Fleet Cluster: prod-catalog-sync-13
 
-**Project**: `gca-gke-test`  
+**Project**: `enterprise-retail-fleet`  
 **Zone**: `us-central1-a`  
 **Domain**: Catalog Synchronization & Configuration Management
 

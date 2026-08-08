@@ -4,7 +4,7 @@ metadata:
   name: gke-fleet-keyring
   namespace: config-connector
   annotations:
-    cnrm.cloud.google.com/project-id: "gca-gke-2025"
+    cnrm.cloud.google.com/project-id: "enterprise-platform-core"
 spec:
   location: us-central1
 ---
@@ -14,7 +14,7 @@ metadata:
   name: gke-fleet-cmek-key
   namespace: config-connector
   annotations:
-    cnrm.cloud.google.com/project-id: "gca-gke-2025"
+    cnrm.cloud.google.com/project-id: "enterprise-platform-core"
 spec:
   keyRingRef:
     name: gke-fleet-keyring

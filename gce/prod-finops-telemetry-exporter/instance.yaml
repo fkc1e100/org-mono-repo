@@ -17,7 +17,7 @@ spec:
         name: default
   serviceAccount:
     emailRef:
-      name: unprivileged-logging-sa@gca-gke-2025.iam.gserviceaccount.com
+      name: unprivileged-logging-sa@enterprise-platform-core.iam.gserviceaccount.com
     scopes:
       - "https://www.googleapis.com/auth/logging.write"
   metadata:

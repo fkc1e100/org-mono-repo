@@ -4,7 +4,7 @@ metadata:
   name: fleet-postgres-db
   namespace: config-connector
   annotations:
-    cnrm.cloud.google.com/project-id: "gca-gke-2025"
+    cnrm.cloud.google.com/project-id: "enterprise-platform-core"
 spec:
   region: us-central1
   databaseVersion: POSTGRES_15
@@ -25,7 +25,7 @@ metadata:
   name: payment_db
   namespace: config-connector
   annotations:
-    cnrm.cloud.google.com/project-id: "gca-gke-2025"
+    cnrm.cloud.google.com/project-id: "enterprise-platform-core"
 spec:
   instanceRef:
     name: fleet-postgres-db
