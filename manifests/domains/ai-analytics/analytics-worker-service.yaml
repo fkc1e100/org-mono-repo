@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: Namespace
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: prod-analytics
   labels:
     cost-center: "finops-analytics-707"
@@ -10,6 +12,8 @@ metadata:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: analytics-shared-pvc
   namespace: prod-analytics
 spec:
@@ -22,6 +26,8 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: analytics-worker
   namespace: prod-analytics
   labels:
@@ -33,6 +39,8 @@ spec:
       app: analytics-worker
   template:
     metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
       labels:
         app: analytics-worker
     spec:

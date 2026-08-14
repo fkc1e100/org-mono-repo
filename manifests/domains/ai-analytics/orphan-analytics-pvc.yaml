@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: orphan-analytics-disk-claim
   namespace: prod-databases
 spec:

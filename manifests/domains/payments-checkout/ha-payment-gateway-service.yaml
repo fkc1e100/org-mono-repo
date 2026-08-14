@@ -74,6 +74,7 @@ metadata:
   name: payment-ilb-service
   namespace: prod-payments
   annotations:
+    argocd.argoproj.io/sync-wave: "2"
     cloud.google.com/load-balancer-type: "Internal"
   labels:
 spec:

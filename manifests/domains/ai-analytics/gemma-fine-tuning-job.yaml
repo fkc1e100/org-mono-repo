@@ -13,6 +13,7 @@ metadata:
   name: gemma-fine-tuning-job
   namespace: ai-training
   annotations:
+    argocd.argoproj.io/sync-wave: "2"
     dws.gke.io/wait-timeout: "5s"
   labels:
 spec:

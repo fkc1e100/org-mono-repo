@@ -9,6 +9,7 @@ metadata:
   name: webhook-sa
   namespace: webhook-system
   annotations:
+    argocd.argoproj.io/sync-wave: "2"
     iam.gke.io/gcp-service-account: vault-auth-sa@enterprise-platform-domain.iam.gserviceaccount.com
 ---
 apiVersion: apps/v1
