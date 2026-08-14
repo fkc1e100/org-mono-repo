@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-auth-service
+  namespace: prod-auth
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user-auth-service
+  template:
+    metadata:
+      labels:
+        app: user-auth-service
+    spec:
+      containers:
+        - name: app
+          image: gcr.io/enterprise-platform/user-auth-app:v2.0.0-broken

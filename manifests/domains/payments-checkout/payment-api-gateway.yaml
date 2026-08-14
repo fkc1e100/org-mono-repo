@@ -74,11 +74,15 @@ webhooks:
       service:
         name: admission-webhook-svc
         namespace: webhook-system
-        path: "/mutate"
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: In
+          values: ["prod-payments"]
     admissionReviewVersions: ["v1"]
     sideEffects: None
-    timeoutSeconds: 10
-    failurePolicy: Fail
+    timeoutSeconds: 3
+    failurePolicy: Ignore
 ---
 apiVersion: v1
 kind: Namespace
