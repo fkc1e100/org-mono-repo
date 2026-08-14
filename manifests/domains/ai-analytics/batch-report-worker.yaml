@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: Namespace
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: batch-processing
   labels:
     cost-center: "finops-analytics-707"
@@ -10,6 +12,8 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: batch-report-worker-processor
   namespace: batch-processing
   labels:
@@ -20,6 +24,8 @@ spec:
       app: spot-batch-processor
   template:
     metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
       labels:
         app: spot-batch-processor
     spec:

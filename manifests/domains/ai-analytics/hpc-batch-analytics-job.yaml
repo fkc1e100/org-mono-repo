@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: Namespace
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: hpc-batch
   labels:
     cost-center: "finops-hpc-999"
@@ -10,6 +12,8 @@ metadata:
 apiVersion: cloud.google.com/v1
 kind: ComputeClass
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: cpu-hpc-compute-class
   namespace: hpc-batch
   labels:
@@ -23,6 +27,8 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: hpc-batch-analytics
   namespace: hpc-batch
   labels:
@@ -33,6 +39,8 @@ spec:
       app: hpc-batch-analytics
   template:
     metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
       labels:
         app: hpc-batch-analytics
     spec:

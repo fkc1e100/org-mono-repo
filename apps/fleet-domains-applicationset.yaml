@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: fleet-domains-generator
+  namespace: argocd
+  labels:
+    architecture: gitops-applicationset
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/fkc1e100/org-mono-repo.git
+        revision: main
+        directories:
+          - path: manifests/domains/*
+  template:
+    metadata:
+      name: 'app-fleet-{{path.basename}}'
+      labels:
+        domain: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/fkc1e100/org-mono-repo.git
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'prod-{{path.basename}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m
+      ignoreDifferences:
+        - group: apps
+          kind: Deployment
+          jsonPointers:
+            - /spec/replicas

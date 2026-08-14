@@ -1,11 +1,15 @@
 apiVersion: v1
 kind: Namespace
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
   name: prod-apps
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
   name: restricted-sa
   namespace: prod-apps
   labels:
@@ -14,6 +18,8 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
   name: config-syncer
   namespace: prod-apps
   labels:
@@ -24,6 +30,8 @@ spec:
       app: config-syncer
   template:
     metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
       labels:
         app: config-syncer
     spec:

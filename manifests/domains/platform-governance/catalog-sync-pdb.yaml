@@ -1,6 +1,8 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
   name: blocking-catalog-pdb
   namespace: prod-apps
   labels:

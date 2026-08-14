@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: Namespace
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: prod-checkout
   labels:
     cost-center: "finops-checkout-404"
@@ -10,6 +12,8 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: checkout-backend-api
   namespace: prod-checkout
   labels:
@@ -20,6 +24,8 @@ spec:
       app: backend-api
   template:
     metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
       labels:
         app: backend-api
     spec:
