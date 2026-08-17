@@ -30,8 +30,8 @@ spec:
       app: config-syncer
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
+      annotations:
+        argocd.argoproj.io/sync-wave: "0"
       labels:
         app: config-syncer
     spec:

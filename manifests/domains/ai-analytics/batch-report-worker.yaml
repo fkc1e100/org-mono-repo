@@ -24,8 +24,8 @@ spec:
       app: spot-batch-processor
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
+      annotations:
+        argocd.argoproj.io/sync-wave: "2"
       labels:
         app: spot-batch-processor
     spec:

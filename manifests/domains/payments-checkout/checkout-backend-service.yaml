@@ -35,8 +35,8 @@ spec:
       app: db-redis
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
+      annotations:
+        argocd.argoproj.io/sync-wave: "2"
       labels:
         app: db-redis
     spec:
@@ -85,8 +85,8 @@ spec:
       app: checkout-backend
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
+      annotations:
+        argocd.argoproj.io/sync-wave: "2"
       labels:
         app: checkout-backend
     spec:

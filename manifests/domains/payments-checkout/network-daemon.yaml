@@ -23,8 +23,8 @@ spec:
       app: network-daemon
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
+      annotations:
+        argocd.argoproj.io/sync-wave: "2"
       labels:
         app: network-daemon
     spec:

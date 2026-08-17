@@ -42,8 +42,8 @@ spec:
       app: llm-batch-inference
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
+      annotations:
+        argocd.argoproj.io/sync-wave: "2"
       labels:
         app: llm-batch-inference
     spec:

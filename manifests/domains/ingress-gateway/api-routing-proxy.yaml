@@ -24,8 +24,8 @@ spec:
       app: api-gateway
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
+      annotations:
+        argocd.argoproj.io/sync-wave: "3"
       labels:
         app: api-gateway
     spec:

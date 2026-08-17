@@ -24,8 +24,8 @@ spec:
       app: backend-api
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
+      annotations:
+        argocd.argoproj.io/sync-wave: "2"
       labels:
         app: backend-api
     spec:

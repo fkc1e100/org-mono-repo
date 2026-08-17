@@ -12,8 +12,8 @@ spec:
       app: memory-cache-service
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
       labels:
         app: memory-cache-service
     spec:

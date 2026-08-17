@@ -39,8 +39,8 @@ spec:
       app: stateful-db
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
       labels:
         app: stateful-db
     spec:

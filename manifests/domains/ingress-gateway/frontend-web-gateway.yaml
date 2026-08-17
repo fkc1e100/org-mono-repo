@@ -25,8 +25,8 @@ spec:
       app: frontend-web
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
+      annotations:
+        argocd.argoproj.io/sync-wave: "3"
       labels:
         app: frontend-web
     spec:

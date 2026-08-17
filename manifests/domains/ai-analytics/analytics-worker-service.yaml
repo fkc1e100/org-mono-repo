@@ -39,8 +39,8 @@ spec:
       app: analytics-worker
   template:
     metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
+      annotations:
+        argocd.argoproj.io/sync-wave: "2"
       labels:
         app: analytics-worker
     spec:
