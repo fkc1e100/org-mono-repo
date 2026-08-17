@@ -35,7 +35,17 @@ resource "google_container_node_pool" "primary_nodes" {
   location   = var.zone
   cluster    = google_container_cluster.primary.name
   project    = var.project_id
-  node_count = var.node_count
+
+  dynamic "autoscaling" {
+    for_each = var.enable_autoscaling ? [1] : []
+    content {
+      min_node_count  = var.min_node_count
+      max_node_count  = var.max_node_count
+      location_policy = "ANY"
+    }
+  }
+
+  node_count = var.enable_autoscaling ? null : var.node_count
 
   node_config {
     machine_type = var.machine_type
