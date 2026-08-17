@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommendations-engine
+  namespace: prod-recommendations
+  labels:
+    app: rec-engine
+    domain: business
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rec-engine
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/sync-wave: "2"
+      labels:
+        app: rec-engine
+    spec:
+      containers:
+      - name: recommender
+        image: us-docker.pkg.dev/google-samples/containers/gke/hello-app:2.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SERVICE_NAME
+          value: "Personalization-RecEngine-v2"
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommendations-engine
+  namespace: prod-recommendations
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: rec-engine
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: feast-feature-registry
+  namespace: prod-recommendations
+data:
+  registry_type: sql
+  online_store: redis
+  project: customer_recommendations
