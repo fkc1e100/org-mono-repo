@@ -1,11 +1,11 @@
 output "cluster_name" {
-  value = google_container_cluster.primary.name
+  value = module.gke_cluster.cluster_name
 }
 
 output "cluster_endpoint" {
-  value = google_container_cluster.primary.endpoint
+  value = module.gke_cluster.cluster_endpoint
 }
 
 output "get_credentials_command" {
-  value = "gcloud container clusters get-credentials ${google_container_cluster.primary.name} --zone ${google_container_cluster.primary.location} --project ${var.project_id}"
+  value = module.gke_cluster.get_credentials_command
 }
