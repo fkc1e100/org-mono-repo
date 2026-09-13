@@ -3,7 +3,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 7.43"
+      version = ">= 5.0"
     }
   }
 }
@@ -31,10 +31,10 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_container_node_pool" "primary_nodes" {
-  name       = "${var.cluster_name}-default-pool"
-  location   = var.zone
-  cluster    = google_container_cluster.primary.name
-  project    = var.project_id
+  name     = "${var.cluster_name}-default-pool"
+  location = var.zone
+  cluster  = google_container_cluster.primary.name
+  project  = var.project_id
 
   dynamic "autoscaling" {
     for_each = var.enable_autoscaling ? [1] : []
