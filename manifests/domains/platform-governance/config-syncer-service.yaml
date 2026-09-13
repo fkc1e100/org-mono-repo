@@ -4,6 +4,9 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   name: prod-apps
+  labels:
+    cost-center: "finops-platform-202"
+    owner: "platform-team"
 ---
 apiVersion: v1
 kind: ServiceAccount
