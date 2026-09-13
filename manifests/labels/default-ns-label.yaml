@@ -4,3 +4,5 @@ metadata:
   name: default
   labels:
     managed-by: hermes-agent
+    cost-center: "finops-platform-202"
+    owner: "platform-team"

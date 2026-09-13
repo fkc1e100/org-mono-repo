@@ -1,0 +1,57 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8spsaprivilegedcontainers
+  annotations:
+    description: >-
+      Backing template for the K8sPSAPrivilegedContainers constraint. Denies
+      privileged containers, with an exemption list for infrastructure
+      namespaces that legitimately need elevated access.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sPSAPrivilegedContainers
+      validation:
+        openAPIV3Schema:
+          type: object
+          properties:
+            exemptNamespaces:
+              description: Namespaces permitted to run privileged containers.
+              type: array
+              items:
+                type: string
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8spsaprivilegedcontainers
+
+        violation[{"msg": msg}] {
+          not is_exempt
+          c := input_containers[_]
+          c.securityContext.privileged
+          msg := sprintf(
+            "privileged container not allowed: %v (namespace %v)",
+            [c.name, object_namespace],
+          )
+        }
+
+        object_namespace := ns {
+          ns := input.review.object.metadata.namespace
+        }
+
+        object_namespace := "" {
+          not input.review.object.metadata.namespace
+        }
+
+        is_exempt {
+          input.parameters.exemptNamespaces[_] == object_namespace
+        }
+
+        input_containers[c] {
+          c := input.review.object.spec.containers[_]
+        }
+
+        input_containers[c] {
+          c := input.review.object.spec.initContainers[_]
+        }

@@ -1,0 +1,67 @@
+name: policy-validate
+
+# The three Gatekeeper constraints in governance/gatekeeper/constraints had no
+# backing ConstraintTemplates, so nothing could evaluate them and the policies
+# the repository advertised were not enforced anywhere. `gator test` checks
+# templates and constraints against the manifests without needing a cluster,
+# so there is no reason for this not to run on every change.
+
+on:
+  pull_request:
+    paths:
+      - "governance/**"
+      - "manifests/**"
+      - ".github/workflows/policy-validate.yml"
+  push:
+    branches: [main]
+    paths:
+      - "governance/**"
+      - "manifests/**"
+      - ".github/workflows/policy-validate.yml"
+
+permissions:
+  contents: read
+
+env:
+  GATOR_VERSION: v3.17.1
+
+jobs:
+  gator:
+    name: gator test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install gator
+        run: |
+          set -euo pipefail
+          curl -sSL -o /tmp/gator.tar.gz \
+            "https://github.com/open-policy-agent/gatekeeper/releases/download/${GATOR_VERSION}/gator-${GATOR_VERSION}-linux-amd64.tar.gz"
+          tar -xzf /tmp/gator.tar.gz -C /tmp gator
+          sudo install -m 0755 /tmp/gator /usr/local/bin/gator
+
+      - name: evaluate constraints against all manifests
+        run: |
+          gator test \
+            --filename=governance/gatekeeper/templates \
+            --filename=governance/gatekeeper/constraints \
+            --filename=manifests
+
+      - name: guard against constraints with no backing template
+        # A constraint whose template is missing is silently inert: the kind
+        # does not exist, so nothing rejects it and nothing enforces it. This
+        # is the exact failure this workflow was added to prevent recurring.
+        run: |
+          set -euo pipefail
+          fail=0
+          for c in governance/gatekeeper/constraints/*.yaml; do
+            kind=$(grep -m1 '^kind:' "$c" | awk '{print $2}')
+            lower=$(echo "$kind" | tr '[:upper:]' '[:lower:]')
+            if ! grep -rqi "kind: ${kind}$" governance/gatekeeper/templates/ 2>/dev/null \
+               && ! grep -rq "name: ${lower}$" governance/gatekeeper/templates/ 2>/dev/null; then
+              echo "::error file=${c}::constraint kind ${kind} has no ConstraintTemplate"
+              fail=$((fail + 1))
+            fi
+          done
+          echo "constraints without a template: ${fail}"
+          exit $((fail > 0))
